@@ -9,8 +9,8 @@ const ActivityPage = () => {
         <Text>Podometre</Text>
       </View>
       <View style={stylesHome.indicatorsContainer}>
-        <Indicator iconIndicator={require('../../../assets/images/home/path-road_black.png')} textIndicator="pas aujourd'hui" valueIndicator="4962"/>
-        <Indicator iconIndicator={require('../../../assets/images/home/runner-guy.png')} textIndicator='Km parcourus' valueIndicator="3.25"/>
+        <Indicator iconIndicator={require('../../../assets/images/home/pas.png')} textIndicator="pas aujourd'hui" valueIndicator="4962" iconLevel={require('../../../assets/images/flame/rabbit-3.png')}/>
+        <Indicator iconIndicator={require('../../../assets/images/home/path-road_black.png')} textIndicator='Km parcourus' valueIndicator="3.25"/>
       </View>
     </View>
   )
@@ -38,7 +38,5 @@ const stylesHome = StyleSheet.create({
     indicatorsContainer: {
         gap:20,
         width: '95%',
-        
-    
     }
 });
