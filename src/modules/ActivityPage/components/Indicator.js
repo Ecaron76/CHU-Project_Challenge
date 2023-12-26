@@ -33,6 +33,6 @@ const stylesIndicator = StyleSheet.create({
         },
         shadowOpacity:  0.20,
         shadowRadius: 1.51,
-        elevation: 4
+        elevation: 2
     }
 });
