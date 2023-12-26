@@ -14,9 +14,9 @@ type RingProgressProps = {
   progress?: number;
 }
 
-const color = "#00B4EC";
+const color = "";
 
-const RingProgress = ({radius = 158, strokeWidth = 9, progress = 0.5}: RingProgressProps) => {
+const RingProgress = ({radius = 170, strokeWidth = 9, progress = 0.5}: RingProgressProps) => {
   const innerRadius = radius - strokeWidth / 2;
   const circumference = 2 * Math.PI * innerRadius;
   const numberOfLinesMain = 4;
@@ -82,18 +82,18 @@ const RingProgress = ({radius = 158, strokeWidth = 9, progress = 0.5}: RingProgr
         break;
       case 2:
         textValue = "7 500";
-        textY= textY-12
+        textY= textY-10
         textX= textX+40
         break;
       case 3:
         textValue = "10 000";
         textY= textY+40
         textX= textX-30
-        fontSize= 20
+        fontSize= 23
         fontWeight='bold'
         textShadowColor='rgba(0, 0, 0, 0.3)'
         textShadowOffset= {width: -1, height: 1}
-        textShadowRadius= 10
+        textShadowRadius= 50
         
         break;
       default:
@@ -110,15 +110,15 @@ const RingProgress = ({radius = 158, strokeWidth = 9, progress = 0.5}: RingProgr
   
 
   return (
-    <View style={{width: radius * 2, height: radius * 2, justifyContent:'center',alignItems:'center', }}>
-      <SVG style={{flex: 1, display:'flex'}}>
+    <View style={{ width: radius * 2, height: radius * 2, justifyContent: 'center', alignItems: 'center', backgroundColor: 'transparent' }}>
+      <SVG style={{ flex: 1, display: 'flex' }}>
         {/* Background */}
-        <Circle 
+        <Circle
           r={innerRadius}
-          cx={radius}
-          cy={radius}
+          cx={radius} // Centrer le cercle horizontalement
+          cy={radius} // Centrer le cercle verticalement
           fill="transparent"
-          stroke={color}
+          stroke="#9f9f9f"
           strokeWidth={strokeWidth}
           opacity={0.2}
         />
@@ -127,13 +127,13 @@ const RingProgress = ({radius = 158, strokeWidth = 9, progress = 0.5}: RingProgr
         {textElements}
         <Avatar />
         {/* Foreground */}
-        <AnimatedCircle 
+        <AnimatedCircle
           animatedProps={animatedProps}
           r={innerRadius}
           cx={radius}
           cy={radius}
           fill="transparent"
-          stroke={color}
+          stroke='#00B4EC'
           strokeWidth={strokeWidth}
           strokeDasharray={[circumference * progress, circumference]}
           strokeLinecap="round"
@@ -143,18 +143,7 @@ const RingProgress = ({radius = 158, strokeWidth = 9, progress = 0.5}: RingProgr
         />
       </SVG>
     </View>
-  )
+  );
 }
-const stylesRingProgress = StyleSheet.create({
-    test: {
-      shadowColor: "#dcdcdc",
-      shadowOffset: {
-        width: 0,
-        height: 1,
-      },
-      shadowOpacity:  0.20,
-      shadowRadius: 1.51,
-      elevation: 4
-    },
-});
+
 export default RingProgress;

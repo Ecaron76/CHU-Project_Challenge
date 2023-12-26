@@ -8,7 +8,7 @@ const Avatar = () => {
         <View style={stylesAvatar.test}>
           <Image
             source={require('../../../../assets/images/home/chat.png')}
-            style={{ width: '100%', height: '100%', resizeMode: 'contain', position: 'absolute' }}
+            style={{ width: '100%', height: '90%', resizeMode: 'contain', position: 'absolute' }}
           />
         </View>
       </View>
@@ -19,12 +19,12 @@ export default Avatar
 
 const stylesAvatar = StyleSheet.create({
     test:{
-        backgroundColor:'#EAEAEA', 
+        backgroundColor:'white', 
         borderRadius:200,width:'40%', 
         height:'40%', 
         justifyContent:'flex-end',
         alignItems:'flex-end',
-        shadowColor: "#dcdcdc",
+        shadowColor: "black",
       shadowOffset: {
         width: 0,
         height: 1,

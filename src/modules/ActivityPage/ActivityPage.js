@@ -27,14 +27,15 @@ const stylesHome = StyleSheet.create({
       borderRadius: 30,
       justifyContent: 'center',
       alignItems: 'center',
-      shadowColor: "#dcdcdc",
+      backgroundColor: 'white',
+      shadowColor: "black",
       shadowOffset: {
         width: 0,
         height: 1,
       },
       shadowOpacity:  0.60,
       shadowRadius: 1.51,
-      elevation: 5
+      elevation: 1
     },
     indicatorsContainer: {
         gap:10,

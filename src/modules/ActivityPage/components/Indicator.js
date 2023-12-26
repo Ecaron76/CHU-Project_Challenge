@@ -26,7 +26,8 @@ const stylesIndicator = StyleSheet.create({
         width: '100%',
         flexDirection: 'row',
         borderRadius: 20,
-        shadowColor: "#dcdcdc",    
+        backgroundColor: 'white',
+        shadowColor: "black",    
         shadowOffset: {
             width: 0,
             height: 1,
