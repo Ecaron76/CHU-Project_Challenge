@@ -4,7 +4,7 @@ export default function LoginPage() {
 
     return (
         <View>
-            <Text>Login</Text>
+            <Text style>Login</Text>
         </View>
     );
 }
