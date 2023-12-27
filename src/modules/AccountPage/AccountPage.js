@@ -12,7 +12,7 @@ export default function AccountPage() {
                     />
                 </View>
             <View style={{width:'70%', alignItems:'center' }}>
-                <Text style={{fontSize: 50, fontWeight:'bold'}}> 217 063 </Text>
+                <Text style={{fontSize: 45, fontWeight:'bold'}}> 217 063 </Text>
                 <Text>pas ce mois-ci</Text>
                 <View style={stylesAccount.testa}>
                     <Text style={{textAlign:'center', paddingHorizontal:12}}>Jours</Text>
@@ -21,7 +21,7 @@ export default function AccountPage() {
                 </View>
             </View>
             <View style={{width:'80%', borderRadius:10}}>
-                <View style={{width:'100%', height:'40%', borderWidth:2, borderRadius:10}}></View>
+                <View style={{width:'100%', height:'43%', borderWidth:2, borderRadius:10}}></View>
                 <View style={stylesAccount.badgeContainer}>
                     <Image
                         source={require('../../../assets/images/badges/badge-turtle.png')}
@@ -71,7 +71,7 @@ const stylesAccount = StyleSheet.create({
     },
     testa:{
         marginTop:10,
-        marginBottom:20,
+        marginBottom:13,
         flexDirection:"row", 
         justifyContent:'space-between', 
         width:'100%',
@@ -97,7 +97,7 @@ const stylesAccount = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'space-between', 
         paddingHorizontal: 10, 
-        marginTop:15,
+        marginTop:10,
         backgroundColor: 'white',
         shadowColor: "black",    
         shadowOffset: {
