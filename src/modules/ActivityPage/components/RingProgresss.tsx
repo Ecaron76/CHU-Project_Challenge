@@ -3,8 +3,9 @@ import SVG, { Circle, Line, Text as SvgText } from 'react-native-svg';
 import Animated, {useSharedValue, useAnimatedProps, withTiming} from 'react-native-reanimated'
 import {useEffect} from 'react';
 import { AntDesign } from '@expo/vector-icons';
-import Avatar from './Avatar';
+
 import React from 'react';
+import Avatar from '../../shared/Avatar';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 
@@ -115,8 +116,8 @@ const RingProgress = ({radius = 170, strokeWidth = 9, progress = 0.5}: RingProgr
         {/* Background */}
         <Circle
           r={innerRadius}
-          cx={radius} // Centrer le cercle horizontalement
-          cy={radius} // Centrer le cercle verticalement
+          cx={radius} 
+          cy={radius} 
           fill="transparent"
           stroke="#9f9f9f"
           strokeWidth={strokeWidth}
