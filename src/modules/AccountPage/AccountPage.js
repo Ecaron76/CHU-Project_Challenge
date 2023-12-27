@@ -5,7 +5,7 @@ export default function AccountPage() {
 
     return (
         <View style={{ width: '100%', height:'100%', alignItems: 'center',backgroundColor: 'white', paddingTop:10}}>
-            <View style={{width:'55%', alignItems:'center' }}>
+            <View style={{width:'70%', alignItems:'center' }}>
                 <View style={stylesAccount.test}>
                     <Image
                         source={require('../../../assets/images/home/chat.png')}
@@ -15,9 +15,9 @@ export default function AccountPage() {
                 <Text style={{fontSize: 50, fontWeight:'bold'}}> 217 063 </Text>
                 <Text>pas ce mois-ci</Text>
                 <View style={stylesAccount.testa}>
-                    <Text>Jours</Text>
-                    <Text>Semaines</Text>
-                    <Text>Mois</Text>
+                    <Text style={{textAlign:'center', paddingHorizontal:12}}>Jours</Text>
+                    <Text style={{textAlign:'center', paddingHorizontal:12}}>Semaines</Text>
+                    <Text style={{backgroundColor:'#00B4EC', color:'white', textAlign:'center', borderRadius: 15, paddingVertical:2, paddingHorizontal:12}}>Mois</Text>
                 </View>
             </View>
             <View style={{width:'80%', borderWidth:2, borderRadius:10, marginBottom:1000}}>
@@ -32,7 +32,7 @@ export default function AccountPage() {
 const stylesAccount = StyleSheet.create({
     test:{
         backgroundColor:'white', 
-        borderRadius:200,width:'100%', 
+        borderRadius:200,width:'80%', 
         height:'50%', 
         shadowColor: "black",
         shadowOffset: {
@@ -48,7 +48,7 @@ const stylesAccount = StyleSheet.create({
     testa:{
         marginTop:10,
         flexDirection:"row", 
-        justifyContent:'space-around', 
+        justifyContent:'space-between', 
         width:'100%',
         shadowColor: "black",
         borderRadius: 30,
@@ -59,9 +59,10 @@ const stylesAccount = StyleSheet.create({
         shadowOpacity:  0.20,
         shadowRadius: 1.51,
         elevation: 2,
-        padding:3,
-        height: 40,
-        alignItems:'center'
+        
+        height: 35,
+        alignItems:'center',
+        paddingHorizontal:10
       },
     
 
