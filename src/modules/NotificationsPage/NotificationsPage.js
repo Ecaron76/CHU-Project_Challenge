@@ -1,10 +1,11 @@
-import {View, Button, Text} from 'react-native';
+import {View} from 'react-native';
+import NotificationsList from "./components/NotificationList";
 
 export default function NotificationsPage() {
 
     return (
         <View>
-            <Text>Notifications</Text>
+            <NotificationsList/>
         </View>
     );
 }
