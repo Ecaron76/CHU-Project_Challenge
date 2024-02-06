@@ -1,4 +1,5 @@
-import {View, Button, Text, Image, StyleSheet, Pressable} from 'react-native';
+import {View, Button, Text, Image, StyleSheet, Pressable, Dimensions} from 'react-native';
+import Chart from '../shared/Chart';
 
 
 export default function AccountPage() {
@@ -20,8 +21,10 @@ export default function AccountPage() {
                     <Text style={{backgroundColor:'#00B4EC', color:'white', textAlign:'center', borderRadius: 15, paddingVertical:2, paddingHorizontal:12, paddingVertical:5}}>Mois</Text>
                 </View>
             </View>
-            <View style={{width:'80%', borderRadius:10}}>
-                <View style={{width:'100%', height:'43%', borderWidth:2, borderRadius:10}}></View>
+            <View style={{width:'90%', borderRadius:10}}>
+                <View style={{width:'100%', height:'43%', borderWidth:2, borderRadius:10}}>
+                    <Chart />
+                </View>
                 <View style={stylesAccount.badgeContainer}>
                     <Image
                         source={require('../../../assets/images/badges/badge-turtle.png')}
