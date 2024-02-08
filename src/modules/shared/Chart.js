@@ -1,5 +1,5 @@
 import {View, Button, Text, Image, StyleSheet, Pressable, Dimensions} from 'react-native';
-import { getISOWeek, format } from 'date-fns';
+import { getISOWeek, format, set, subDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import {
     LineChart,
@@ -27,22 +27,24 @@ import {
 
   
 export default function Chart({delay}) {
-  const allDays = ["Lun.", "Mar.", "Mer.", "Jeu.", "Ven.", "Sam.", "Dim."];
   const currentDate = new Date();
+  const allDays = [];
   switch (delay) {
     case 'jours':
-      const currentDayIndex = allDays.findIndex(day => format(currentDate, 'EEE', { locale: fr }) === day);
-      console.log(currentDayIndex)
-      const daysCount = allDays.length;
-      const shiftedDays = Array.from({ length: 5 }, (_, i) => allDays[(currentDayIndex + i - 1 + daysCount) % daysCount]);
-
-      labelsDelay = shiftedDays;
-      break;
+      for (let i = 4; i >= 0; i--) {
+        const previousDay = subDays(currentDate, i);
+        console.log(previousDay)
+        const formattedDay = format(previousDay, 'EEE', { locale: fr });
+        allDays.push(formattedDay);
+        console.log(allDays)
+        
+      }
+      labelsDelay = allDays
+      break
     case 'semaines':
       const currentWeekNumber = getISOWeek(currentDate);
       const last5Weeks = Array.from({ length: 5 }, (_, i) => currentWeekNumber - i);
       const weekLabels = last5Weeks.map(weekNumber => `Sem ${weekNumber}`);
-
       labelsDelay = weekLabels.reverse();
       break;
     case 'mois':
