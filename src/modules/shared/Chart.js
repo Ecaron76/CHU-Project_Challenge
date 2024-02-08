@@ -1,13 +1,8 @@
-import {View, Button, Text, Image, StyleSheet, Pressable, Dimensions} from 'react-native';
+import {Dimensions} from 'react-native';
 import { getISOWeek, format, set, subDays } from 'date-fns';
 import { fr } from 'date-fns/locale';
 import {
     LineChart,
-    BarChart,
-    PieChart,
-    ProgressChart,
-    ContributionGraph,
-    StackedBarChart
   } from "react-native-chart-kit";
 
   
@@ -33,11 +28,8 @@ export default function Chart({delay}) {
     case 'jours':
       for (let i = 4; i >= 0; i--) {
         const previousDay = subDays(currentDate, i);
-        console.log(previousDay)
         const formattedDay = format(previousDay, 'EEE', { locale: fr });
         allDays.push(formattedDay);
-        console.log(allDays)
-        
       }
       labelsDelay = allDays
       break
@@ -55,7 +47,6 @@ export default function Chart({delay}) {
         
       labelsDelay= shiftedMonths
       break;
-  
     default:
       break;
   }
