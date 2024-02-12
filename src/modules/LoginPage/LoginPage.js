@@ -7,24 +7,26 @@ import
 import { loginStore } from "../../store/loginStore";
 import { Formik } from 'formik';
 import styles from './Login.styles'
-import { Children, useEffect } from 'react';
+import { useState, Children, useEffect } from 'react';
 //import { LoginService } from '../../services/LoginService/LoginService';
 import 'react-native-url-polyfill/auto'
 import {supabase} from '../../services/supabase/supabase.js';
 import { LoginService } from '../../services/LoginService/LoginService';
 import * as yup from 'yup'
-import { useState } from 'react';
-
-
+import * as Crypto from 'expo-crypto';
 
 
 export default function LoginPage() {
 
-    const {id, password, isLogged, setId, setPassword, setIsLogged } = loginStore();
-
+    const {chuId, password, isLogged, setChuId, setPassword, setIsLogged, pkId, setPkId } = loginStore();
+    
     // const qui garde en mémoire si le user à déja essayé de connecter.
     // permet d'afficher message erreur mot de passe ou identifiant.
     const [triedToLogOnce, setTriedToLogOnce] = useState(false);
+    const [enteredFalsePassword, setenteredFalsePassword] = useState(false);
+    const [isChallengeOpen, setisChallengeOpen] = useState(false);
+    const [noChallengeForUser, setNoChallengeForUser] = useState(false);
+
 
     // méthode de vérification que les identifiants sont bien rentré. Utilise librarie yup.
     const loginValidationSchema = yup.object().shape({
@@ -36,8 +38,44 @@ export default function LoginPage() {
           //.min(8, ({ min }) => `Password must be at least ${min} characters`)
           .max(10, ({ max }) => `Le mot de passe ne peut dépasser ${max} charactères`)
           .required('Mot de passe requis'),
-      })
-      
+      });
+
+    // Méthode qui vérifie que les mots de passe correspondent.
+      async function checkCryptedPassword(userPassword, challengePassword) {
+
+        const digest = await Crypto.digestStringAsync(
+            Crypto.CryptoDigestAlgorithm.SHA256,
+            userPassword
+          );
+
+          console.log('Digest: ', digest);
+
+          return digest === challengePassword ? true : false;
+
+      };
+
+      // Méthode qui vérique que le user se connecter entre les dates d'ouverture du Challenge.
+      const checkIfChallengeOpen = (challengeInfos) => {
+
+        const endDate = Date.parse(challengeInfos.challenge.challenge_end);
+        const startDate = Date.parse(challengeInfos.challenge.challenge_start);
+        const actualDate = Date.now();
+        
+        // Date de test
+        //const actualDate = Date.parse(new Date('2028-12-10T00:00:00'));
+
+        console.log(endDate);
+        console.log(startDate);
+        console.log(actualDate);
+
+        if( actualDate <= endDate && actualDate >= startDate ) {
+            return true;
+        }
+
+        return false;
+
+      }
+
 
     return (
         <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps='handled'>
@@ -48,12 +86,51 @@ export default function LoginPage() {
                     initialValues={{ id: "", password: "" }}
                     onSubmit={ async (values) => {
 
-                        setId(values.id);
-                        setPassword(values.password);
-                        // checkUserPassword va vérifier que le mot de passe entré est le bon et return true si oui
-                        const isCorrectPassword = await LoginService.checkUserPassword(values.id, values.password);
-                        setTriedToLogOnce(true); // indique que le user a essayé de se connecter mais avec les mauvais identifiants.
-                        setIsLogged(isCorrectPassword);
+                        // Récupère tous les challenges auxquels le user est inscrit.
+                        const challengeInfosByUserId = await LoginService.getChallengeDataByUserId(values.id, values.password);
+
+                        // Si pas de challenge pour le user 
+                        if(challengeInfosByUserId.length == 0) {
+                            console.log("Pas de challenge");
+                            setNoChallengeForUser(true);
+                        }
+                        // Si un ou plusieurs challenges pour le user
+                        else {
+
+                            // On enregistre les identifiant du User.
+                            setPkId(challengeInfosByUserId[0].user.id)
+                            setChuId(values.id);
+                            
+                            // Vérifie quel challenge est actif parmis ceux auxquels est inscrit le user;
+                            const [activeChallengeInfos] = challengeInfosByUserId.filter(objet => objet.challenge.is_active === true );
+
+                            const activeChallengePassword = activeChallengeInfos.challenge.password;
+
+                            const isCorrectPassword = await checkCryptedPassword(values.password, activeChallengePassword);
+
+                            if (!isCorrectPassword){
+                                console.log("mauvais mot de passe");
+                                setTriedToLogOnce(true); // indique que le user a essayé de se connecter mais avec les mauvais identifiants.
+                                setenteredFalsePassword(true); // indique que le user a entré un mauvais MDP.
+                            }
+                            else {
+                                setenteredFalsePassword(false); 
+
+                                //vérifie si les dates du challenge sont ouverte pour la connexion.
+                                setisChallengeOpen(checkIfChallengeOpen(activeChallengeInfos));
+
+                                // TODO Gérer enrolment date
+                                
+                                if(isChallengeOpen)
+                                {
+                                    console.log("Challenge Ouvert");
+                                    console.log("PK userId " + pkId);
+                                    console.log("Chu id " + chuId);
+    
+                                    //setIsLogged(isCorrectPassword);
+                                }
+                            }
+                        }
                     }}
                 >
                     {({
@@ -93,11 +170,17 @@ export default function LoginPage() {
                                     value={values.password}
                                     
                                 />
+                                {(!isChallengeOpen && triedToLogOnce && !enteredFalsePassword)  && 
+                                    <Text style={{ fontSize: 10, color: 'red' }}>Le challenge n'est pas accessible pour le moment.</Text>
+                                }
+                                {noChallengeForUser &&
+                                    <Text style={{ fontSize: 10, color: 'red' }}>Vous n'êtes inscrit à aucun Challenge</Text>
+                                }
+                                {(!isLogged && triedToLogOnce && enteredFalsePassword)  && // si mot de passe incorrect on affiche ce message
+                                    <Text style={{ fontSize: 10, color: 'red' }}>Identifiant ou mot de passe incorrect</Text>
+                                }
                                 {errors.password &&
                                     <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
-                                }
-                                {(!isLogged && triedToLogOnce)  && // si mot de passe incorrect on affiche ce message
-                                    <Text style={{ fontSize: 10, color: 'red' }}>Identifiant ou mot de passe incorrect</Text>
                                 }
                             </View>
                             <View style={styles.buttonView}>
