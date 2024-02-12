@@ -33,7 +33,8 @@
     "react-native-url-polyfill": "^2.0.0",
     "typescript": "^5.1.3",
     "yup": "^1.3.3",
-    "zustand": "^4.4.7"
+    "zustand": "^4.4.7",
+    "expo-crypto": "~12.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0"
