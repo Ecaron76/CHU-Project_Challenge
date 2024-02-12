@@ -23,10 +23,23 @@ export default function LoginPage() {
     // const qui garde en mémoire si le user à déja essayé de connecter.
     // permet d'afficher message erreur mot de passe ou identifiant.
     const [triedToLogOnce, setTriedToLogOnce] = useState(false);
-    const [enteredFalsePassword, setenteredFalsePassword] = useState(false);
+    const [enteredFalsePassword, setEnteredFalsePassword] = useState(false);
     const [isChallengeOpen, setisChallengeOpen] = useState(false);
     const [noChallengeForUser, setNoChallengeForUser] = useState(false);
+    
 
+    useEffect(() => {
+        logUser();
+      }, [isChallengeOpen]);
+
+    // Méthode qui log le user en changeant la valeur de  isLogged dans le store.
+    const logUser = () => {
+
+        if(isChallengeOpen)
+        {
+            setIsLogged(true);
+        }
+    }
 
     // méthode de vérification que les identifiants sont bien rentré. Utilise librarie yup.
     const loginValidationSchema = yup.object().shape({
@@ -48,13 +61,11 @@ export default function LoginPage() {
             userPassword
           );
 
-          console.log('Digest: ', digest);
-
           return digest === challengePassword ? true : false;
 
       };
 
-      // Méthode qui vérique que le user se connecter entre les dates d'ouverture du Challenge.
+      // Méthode qui vérifie que que le user se connecte entre les dates d'ouverture du Challenge.
       const checkIfChallengeOpen = (challengeInfos) => {
 
         const endDate = Date.parse(challengeInfos.challenge.challenge_end);
@@ -64,18 +75,13 @@ export default function LoginPage() {
         // Date de test
         //const actualDate = Date.parse(new Date('2028-12-10T00:00:00'));
 
-        console.log(endDate);
-        console.log(startDate);
-        console.log(actualDate);
-
         if( actualDate <= endDate && actualDate >= startDate ) {
             return true;
         }
 
         return false;
-
       }
-
+    
 
     return (
         <ScrollView contentContainerStyle={{flexGrow: 1}} keyboardShouldPersistTaps='handled'>
@@ -91,13 +97,12 @@ export default function LoginPage() {
 
                         // Si pas de challenge pour le user 
                         if(challengeInfosByUserId.length == 0) {
-                            console.log("Pas de challenge");
                             setNoChallengeForUser(true);
                         }
                         // Si un ou plusieurs challenges pour le user
                         else {
 
-                            // On enregistre les identifiant du User.
+                            // On enregistre les identifiant du User dans le store.
                             setPkId(challengeInfosByUserId[0].user.id)
                             setChuId(values.id);
                             
@@ -106,29 +111,20 @@ export default function LoginPage() {
 
                             const activeChallengePassword = activeChallengeInfos.challenge.password;
 
+                            // check si le password est correct.
                             const isCorrectPassword = await checkCryptedPassword(values.password, activeChallengePassword);
 
                             if (!isCorrectPassword){
-                                console.log("mauvais mot de passe");
                                 setTriedToLogOnce(true); // indique que le user a essayé de se connecter mais avec les mauvais identifiants.
-                                setenteredFalsePassword(true); // indique que le user a entré un mauvais MDP.
+                                setEnteredFalsePassword(true); // indique que le user a entré un mauvais MDP.
                             }
                             else {
-                                setenteredFalsePassword(false); 
+                                setEnteredFalsePassword(false); 
 
-                                //vérifie si les dates du challenge sont ouverte pour la connexion.
+                                //vérifie si les dates du challenge sont ouvertes pour la connexion.
                                 setisChallengeOpen(checkIfChallengeOpen(activeChallengeInfos));
-
-                                // TODO Gérer enrolment date
                                 
-                                if(isChallengeOpen)
-                                {
-                                    console.log("Challenge Ouvert");
-                                    console.log("PK userId " + pkId);
-                                    console.log("Chu id " + chuId);
-    
-                                    //setIsLogged(isCorrectPassword);
-                                }
+                                // TODO Gérer enrolment date
                             }
                         }
                     }}
@@ -170,13 +166,13 @@ export default function LoginPage() {
                                     value={values.password}
                                     
                                 />
-                                {(!isChallengeOpen && triedToLogOnce && !enteredFalsePassword)  && 
+                                {(!isChallengeOpen && triedToLogOnce && !enteredFalsePassword)  && // Si le challenge est fermé
                                     <Text style={{ fontSize: 10, color: 'red' }}>Le challenge n'est pas accessible pour le moment.</Text>
                                 }
-                                {noChallengeForUser &&
+                                {noChallengeForUser && // Si pas de challenge pour le user.
                                     <Text style={{ fontSize: 10, color: 'red' }}>Vous n'êtes inscrit à aucun Challenge</Text>
                                 }
-                                {(!isLogged && triedToLogOnce && enteredFalsePassword)  && // si mot de passe incorrect on affiche ce message
+                                {(!isLogged && triedToLogOnce && enteredFalsePassword)  && // si mot de passe incorrect on affiche ce message.
                                     <Text style={{ fontSize: 10, color: 'red' }}>Identifiant ou mot de passe incorrect</Text>
                                 }
                                 {errors.password &&
