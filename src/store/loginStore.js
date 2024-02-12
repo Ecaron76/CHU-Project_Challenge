@@ -6,8 +6,10 @@ export const loginStore = create((set) => ({
     // removeAllBears: () => set({ bears: 0 }),
     isLogged: false,
     setIsLogged: (value) => set((state)=>({isLogged: value})),
-    id:"",
-    setId: (enteredId) => set((state) => ({ id: enteredId  })),
+    chuId:"",
+    setChuId: (enteredId) => set((state) => ({ chuId: enteredId  })),
+    pkId:"",
+    setPkId: (enteredId) => set((state) => ({ pkId: enteredId  })),
     password:"",
     setPassword: (enteredPassword) => set((state) => ({ password: enteredPassword })),
   }))
