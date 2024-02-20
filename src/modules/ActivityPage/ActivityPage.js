@@ -1,12 +1,41 @@
 import { View, Text, StyleSheet } from 'react-native'
 import { useState, useEffect } from 'react';
 import React from 'react'
+import { PedometerService } from '../../services/PedometerService/PedometerService';
 
 import Indicator from './components/Indicator'
 import RingProgress from './components/RingProgresss'
 // import useHealthData from '../../hooks/useHealthData';
 
 const ActivityPage = () => {
+
+  const [dailySteps, setDailySteps] = useState(0);
+
+  useEffect(() => {
+
+    loadData();
+
+  }, []);
+
+  // méthode qui appelle getPedometerData toutes les 10 secondes.
+  const loadData = async () => {
+
+    await getPedometerData();
+
+    const interval = setInterval(async () => {
+      await getPedometerData();
+    }, 2000);
+
+    return () => clearInterval(interval);
+    
+  };
+
+  // Fonction qui récupère les pas de l'utilisateur en appelant le service PedometerService.
+  const getPedometerData = async () => {
+    const stepsNumber = await PedometerService.getDailySteps();
+    setDailySteps(stepsNumber);         
+  }
+
   // const [date, setDate] = useState(new Date());
   // const { steps, flights, distance } = useHealthData(date);
 
@@ -22,11 +51,11 @@ const ActivityPage = () => {
   return (
     <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
       <View style={stylesHome.podometerContainer}>
-        <RingProgress progress={5000/10000} />
+        <RingProgress progress={dailySteps/10000} />
       </View>
       <View style={stylesHome.indicatorsContainer}>
-        <Indicator iconIndicator={require('../../../assets/images/home/pas.png')} textIndicator="pas aujourd'hui" valueIndicator={5000} iconLevel={require('../../../assets/images/flame/rabbit-3.png')} />
-        <Indicator iconIndicator={require('../../../assets/images/home/path-road_black.png')} textIndicator='Km parcourus' valueIndicator={5.0} />
+        <Indicator iconIndicator={require('../../../assets/images/home/pas.png')} textIndicator="pas aujourd'hui" valueIndicator={dailySteps} iconLevel={require('../../../assets/images/flame/rabbit-3.png')} />
+        <Indicator iconIndicator={require('../../../assets/images/home/path-road_black.png')} textIndicator='Km parcourus' valueIndicator={dailySteps/1000} />
       </View>
     </View>
   );
