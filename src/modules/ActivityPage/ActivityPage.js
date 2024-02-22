@@ -1,39 +1,107 @@
 import { View, Text, StyleSheet } from 'react-native'
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import React from 'react'
 import { PedometerService } from '../../services/PedometerService/PedometerService';
-
+import { loginStore } from "../../store/loginStore";
 import Indicator from './components/Indicator'
 import RingProgress from './components/RingProgresss'
 // import useHealthData from '../../hooks/useHealthData';
 
+/**
+ * Page qui affiche les pas de l'utilisateur.
+ * Elle lance deux timers : 
+ *  - un qui récupèrer les pas dans dans le téléphones toutes les secondes.
+ *  - un qui lance l'enregistrement des données en base toutes les minutes.
+ */
 const ActivityPage = () => {
 
   const [dailySteps, setDailySteps] = useState(0);
+  const isFirstLoading = true;
+  const isFirstLoadingRef = useRef(isFirstLoading);
+  const launchedTimerForLoading = useRef();
+  const launchedTimerForSaving = useRef();
+  const getStepsTimerValue = 1000; // en ms
+  const saveStepsTimerValue = 60000; // en ms  
+  const {chuId, password, isLogged, setChuId, setPassword, setIsLogged, pkId, setPkId, challengeId, setChallengeId} = loginStore();
 
   useEffect(() => {
-
+    // Si premier chargement de la page
+    if (!isFirstLoadingRef.current) {
+      saveData();
+    }
     loadData();
+      
 
-  }, []);
+  }, [dailySteps]);
+  
 
-  // méthode qui appelle getPedometerData toutes les 10 secondes.
+  // Méthode qui appelle getPedometerData toutes les 10 secondes et vérifie si les nombres de pas à évolué. 
   const loadData = async () => {
 
-    await getPedometerData();
+    // Si c'est le premier chargement de la page
+    if(isFirstLoadingRef.current) {
 
-    const interval = setInterval(async () => {
-      await getPedometerData();
-    }, 2000);
+      // On récupère les pas.
+      const stepsNumber = await getPedometerData();
+      setDailySteps(stepsNumber);
 
-    return () => clearInterval(interval);
-    
+    }
+    else { // Si la page a déja été chargée.
+
+      // On supprime l'ancien timer si il y en à déja un de lancé.
+      if (launchedTimerForLoading.current) {
+        await clearTimeout(launchedTimerForLoading.current);
+      }
+      // On lance le timer qui va vérifier le nombre de pas à intervalles régulières.
+      const reloadStepsInterval = setInterval(async () => {
+
+        const stepsNumber = await getPedometerData();
+  
+        setDailySteps(stepsNumber);
+  
+      }, getStepsTimerValue);
+      
+      // On reférence le timer et le met dans le useRef launchedTimerForLoading afin de pouvoir le récup et le supprimer ( après rechargement de la page ).
+      launchedTimerForLoading.current=reloadStepsInterval;
+      
+      return () => clearInterval(reloadStepsInterval);
+
+    }
   };
 
   // Fonction qui récupère les pas de l'utilisateur en appelant le service PedometerService.
   const getPedometerData = async () => {
+    
     const stepsNumber = await PedometerService.getDailySteps();
-    setDailySteps(stepsNumber);         
+
+    // On indique la page a été chargée une premiere fois.
+    isFirstLoadingRef.current = false;
+
+    return stepsNumber;
+    
+  };
+
+  // Méthode qui appelle saveSteps toutes les minutes.
+  const saveData = async () => {
+
+    // On supprime l'ancien timer si il y en à déja un de lancé.
+    if (launchedTimerForSaving.current) {
+      await clearTimeout(launchedTimerForSaving.current);
+    }
+
+    const saveStepsInterval = setInterval(async () => {
+      await saveSteps(dailySteps);
+    }, saveStepsTimerValue);
+    
+    // On reférence le timer et le met dans le useRef launchedTimerForSaving afin de pouvoir le récup et le supprimer ( après rechargement de la page ).
+    launchedTimerForSaving.current=saveStepsInterval;
+
+    return () => clearInterval(saveStepsInterval);
+  }
+  
+  // Fonction qui enregistre les pas du user en appelant PedometerServices.
+  const saveSteps = async (dailySteps) => {
+    await PedometerService.saveSteps(dailySteps, chuId, pkId, challengeId);
   }
 
   // const [date, setDate] = useState(new Date());
@@ -46,7 +114,6 @@ const ActivityPage = () => {
 
   //   setDate(currentDate); // Update the state variable
   // };
-  
 
   return (
     <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>

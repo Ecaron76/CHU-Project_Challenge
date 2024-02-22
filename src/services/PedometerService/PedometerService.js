@@ -1,4 +1,7 @@
 import { Pedometer } from 'expo-sensors';
+import 'react-native-url-polyfill/auto'
+import { supabase } from "../supabase/supabase";
+import { loginStore } from "../../store/loginStore";
 
 
 export const PedometerService = {
@@ -18,5 +21,76 @@ export const PedometerService = {
         return pastStepCountResult.steps;
         
     },
+    // méthode qui enregistre les pas en base de données.
+    saveSteps: async function(stepsCount, chuId, pkId, challengeId ) {
+        try {
+            const now = new Date();
+            const todayDate = now.toJSON().substring(0,10)
+            
+            const noStepsForToday = await this.checkIfDataForDayExist(todayDate, pkId);
+            
+            // Si pas d'entrée pour la journée on créer une nouvelle ligne.
+            if (noStepsForToday) {
+                await this.insertSteps(stepsCount, todayDate, pkId, challengeId);
+            }
+            else { // Si déja une entrée pour la journée on update 
+                await this.updateSteps(stepsCount, todayDate, pkId, challengeId);
+            }
+
+        } catch (error) {
+
+        }
+    },
+    // méthode qui insert les pas d'un user en base.
+    insertSteps: async function(stepsCount, todayDate, pkId, challengeId) {
+        
+        try {
+            const { data, error } = await supabase
+            .from('daily_user_steps')
+            .insert({date: todayDate, count: stepsCount, challenge_id: challengeId, user_id: pkId})
+            .select()
+
+            console.log("new line = " + data);
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    },
+    // méthode qui update les pas d'un user en base.
+    updateSteps: async function(stepsCount, todayDate, pkId, challengeId) {
+        
+        try {
+            const { data, error } = await supabase
+            .from('daily_user_steps')
+            .update({count: stepsCount})
+            .eq('user_id', pkId)
+            .eq('challenge_id', challengeId)
+            .eq('date', todayDate)
+            
+        } catch (error) {
+            console.log(error);
+
+        }
+    },
+    // vérifie si il y à déja une ligne contenant des pas pour la journée.
+    checkIfDataForDayExist: async function(todayDate, pkId) {
+        try {
+
+            let { data: dailySteps, error } = await supabase
+                .from('daily_user_steps')
+                .select('*')
+                .eq('user_id', pkId)
+                .eq('date', todayDate)
+            
+            return dailySteps.length === 0 ? true : false;
+
+        } catch (error) {
+            console.log(error);
+
+        }
+    },
+
+
 
   } 

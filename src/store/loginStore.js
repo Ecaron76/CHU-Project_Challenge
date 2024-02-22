@@ -12,4 +12,6 @@ export const loginStore = create((set) => ({
     setPkId: (enteredId) => set((state) => ({ pkId: enteredId  })),
     password:"",
     setPassword: (enteredPassword) => set((state) => ({ password: enteredPassword })),
+    challengeId:"",
+    setChallengeId: (id) => set((state) => ({ challengeId: id })),
   }))
