@@ -18,7 +18,7 @@ import * as Crypto from 'expo-crypto';
 
 export default function LoginPage() {
 
-    const {chuId, password, isLogged, setChuId, setPassword, setIsLogged, pkId, setPkId } = loginStore();
+    const {chuId, password, isLogged, setChuId, setPassword, setIsLogged, pkId, setPkId, challengeId, setChallengeId } = loginStore();
     
     // const qui garde en mémoire si le user à déja essayé de connecter.
     // permet d'afficher message erreur mot de passe ou identifiant.
@@ -108,6 +108,9 @@ export default function LoginPage() {
                             
                             // Vérifie quel challenge est actif parmis ceux auxquels est inscrit le user;
                             const [activeChallengeInfos] = challengeInfosByUserId.filter(objet => objet.challenge.is_active === true );
+
+                            // Enregistre dans le store l'id du Challenge actif.
+                            await setChallengeId(activeChallengeInfos.challenge.id);
 
                             const activeChallengePassword = activeChallengeInfos.challenge.password;
 
