@@ -1,27 +1,75 @@
-import {View, Button, Text, Image, StyleSheet, Pressable} from 'react-native';
+import {View, Button, Text, Image, StyleSheet, Pressable, Dimensions, TouchableOpacity} from 'react-native';
+import Chart from '../shared/Chart';
+import { useState } from 'react';
 
 
 export default function AccountPage() {
+    const [selectedOption, setSelectedOption] = useState('mois');
 
+  const handleOptionPress = (option) => {
+    setSelectedOption(option);
+    console.log(selectedOption)
+  };
     return (
         <View style={{ width: '100%', height:'100%', alignItems: 'center',backgroundColor: 'white', paddingTop:10}}>
             <View style={stylesAccount.avatar}>
-                    <Image
-                        source={require('../../../assets/images/home/chat.png')}
-                        style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems:'flex-end', position:'absolute' }}
-                    />
-                </View>
+                <Image
+                    source={require('../../../assets/images/home/chat.png')}
+                    style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems:'flex-end', position:'absolute' }}
+                />
+            </View>
             <View style={{width:'70%', alignItems:'center' }}>
                 <Text style={{fontSize: 45, fontWeight:'bold'}}> 217 063 </Text>
                 <Text>pas ce mois-ci</Text>
                 <View style={stylesAccount.testa}>
-                    <Text style={{textAlign:'center', paddingHorizontal:12}}>Jours</Text>
-                    <Text style={{textAlign:'center', paddingHorizontal:12}}>Semaines</Text>
-                    <Text style={{backgroundColor:'#00B4EC', color:'white', textAlign:'center', borderRadius: 15, paddingVertical:2, paddingHorizontal:12, paddingVertical:5}}>Mois</Text>
+                    <TouchableOpacity
+                        style={[
+                            stylesAccount.option,
+                            selectedOption === 'jours' && stylesAccount.selectedOption,
+                        ]}
+                        onPress={() => handleOptionPress('jours')}
+                    >
+                        <Text style={[
+                            stylesAccount.optionText,
+                            selectedOption === 'jours' && stylesAccount.selectedOptionText,
+                        ]}>Jours</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[
+                            stylesAccount.option,
+                            selectedOption === 'semaines' && stylesAccount.selectedOption,
+                        ]}
+                        onPress={() => handleOptionPress('semaines')}
+                    >
+                        <Text style={[
+                            stylesAccount.optionText,
+                            selectedOption === 'semaines' && stylesAccount.selectedOptionText,
+                        ]}>Semaines</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        style={[
+                            stylesAccount.option,
+                            selectedOption === 'mois' && stylesAccount.selectedOption,
+                        ]}
+                        onPress={() => handleOptionPress('mois')}
+                    >
+                        <Text style={[
+                            stylesAccount.optionText,
+                            selectedOption === 'mois' && stylesAccount.selectedOptionText,
+                        ]}
+                        >
+                        Mois
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             </View>
-            <View style={{width:'80%', borderRadius:10}}>
-                <View style={{width:'100%', height:'43%', borderWidth:2, borderRadius:10}}></View>
+            
+            
+     
+            <View style={{ width: '90%', height:'30%', alignSelf: 'center',}}>
+                <Chart />
+            </View>
+            <View style={{width:'90%', borderRadius:10}}>
                 <View style={stylesAccount.badgeContainer}>
                     <Image
                         source={require('../../../assets/images/badges/badge-turtle.png')}
@@ -49,8 +97,8 @@ export default function AccountPage() {
                     />
                 </View>
             </View>
-            
-        </View>
+            </View>
+        
     );
 }
 
@@ -58,8 +106,8 @@ const stylesAccount = StyleSheet.create({
     avatar:{
         backgroundColor:'white', 
         borderRadius:200,
-        width:'50%', 
-        height:'35%', 
+        width:'60%', 
+        height:'32%', 
         shadowColor: "black",
         shadowOffset: {
             width: 0,
@@ -72,10 +120,13 @@ const stylesAccount = StyleSheet.create({
     testa:{
         marginTop:10,
         marginBottom:13,
+        paddingRight:10,
+        paddingLeft:7,
         flexDirection:"row", 
         justifyContent:'space-between', 
         width:'100%',
-        shadowColor: "black",
+        shadowColor:'back',
+        backgroundColor:'white',
         borderRadius: 30,
         shadowOffset: {
           width: 5,
@@ -84,10 +135,34 @@ const stylesAccount = StyleSheet.create({
         shadowOpacity:  0.20,
         shadowRadius: 1.51,
         elevation: 2,
-        
+        borderWidth: 1,
+        borderColor: 'grey',
         height: 35,
         alignItems:'center',
-        paddingHorizontal:10
+        
+        
+      },
+      option: {
+        width: '34%',
+        alignItems:'center',
+        paddingVertical: 5,
+        
+      },
+      selectedOption: {
+        backgroundColor: '#00B4EC',
+        borderRadius: 15,
+
+        textAlign: 'center',
+        borderRadius: 15,
+        
+      },
+      optionText: {
+        textAlign: 'center',
+        paddingHorizontal: 12,
+        color: 'black', 
+      },
+      selectedOptionText: {
+        color: 'white', // Couleur du texte lorsque l'option est sélectionnée
       },
 
     badgeContainer:{
