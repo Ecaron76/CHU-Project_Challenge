@@ -122,7 +122,7 @@ const ActivityPage = () => {
       </View>
       <View style={stylesHome.indicatorsContainer}>
         <Indicator iconIndicator={require('../../../assets/images/home/pas.png')} textIndicator="pas aujourd'hui" valueIndicator={dailySteps} iconLevel={require('../../../assets/images/flame/rabbit-3.png')} />
-        <Indicator iconIndicator={require('../../../assets/images/home/path-road_black.png')} textIndicator='Km parcourus' valueIndicator={dailySteps/1000} />
+        <Indicator iconIndicator={require('../../../assets/images/home/path-road_black.png')} textIndicator='Km parcourus' valueIndicator={(((dailySteps/100)*64)/1000).toFixed(2)} />
       </View>
     </View>
   );

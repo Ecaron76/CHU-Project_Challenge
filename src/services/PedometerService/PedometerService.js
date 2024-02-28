@@ -50,8 +50,6 @@ export const PedometerService = {
             .insert({date: todayDate, count: stepsCount, challenge_id: challengeId, user_id: pkId})
             .select()
 
-            console.log("new line = " + data);
-
         } catch (error) {
             console.log(error);
 
