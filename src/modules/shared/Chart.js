@@ -19,7 +19,12 @@ import {
     
     
   };
-
+  const formatValue = (value) => {
+    if (value >= 1000) {
+      return `${Math.round(value / 1000)}K`;
+    }
+    return value.toString();
+  };
   
 export default function Chart({delay, stepsData}) {
   console.log(stepsData)
@@ -39,6 +44,8 @@ export default function Chart({delay, stepsData}) {
       const last5Weeks = Array.from({ length: 5 }, (_, i) => currentWeekNumber - i);
       const weekLabels = last5Weeks.map(weekNumber => `Sem ${weekNumber}`);
       labelsDelay = weekLabels.reverse();
+      stepsCount= stepsData[1]?.map(item => item.count)
+
       break;
     case 'mois':
       const allMonths = ["Janv.", "Févr.", "Mars", "Avri.", "Mai", "Juin", "Juil.", "Août", "Sept.", "Octo.", "Nove.", "Déce."];
@@ -69,6 +76,7 @@ export default function Chart({delay, stepsData}) {
         withDots= {false}
         chartConfig={chartConfig}
         bezier
+        formatYLabel={formatValue}
         style={{
           borderRadius: 16,
         }}
