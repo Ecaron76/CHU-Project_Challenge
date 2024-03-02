@@ -24,7 +24,6 @@ export default function AccountPage() {
         // stepsData est un tableau qui contient 3 tableaux => 1- les 5 derniers mois / 2- les 5 dernières semaines / 3- les 5 derniers jours. 
         const stepsData = await StepsService.getSteps(pkId);
 
-        console.log(stepsData);
         // Contient le tableau de données necessaire pour remplir le composant graphique de pas. C'est un tableau qui contient trois tableau. 
         //1) les mois 2) les semaines 3) les jours.
         setArrayOfStepsDatas(stepsData);
@@ -32,7 +31,7 @@ export default function AccountPage() {
 
     const handleOptionPress = (option) => {
         setSelectedOption(option);
-        console.log(selectedOption)
+        
     };
 
     return (
@@ -91,8 +90,8 @@ export default function AccountPage() {
             
             
      
-            <View style={{ width: '90%', height:'30%', alignSelf: 'center',}}>
-                <Chart delay={selectedOption}/>
+            <View style={{ width: '85%', height:'30%', alignSelf: 'center', }}>
+                <Chart delay={selectedOption} stepsData={arrayOfStepsDatas}/>
             </View>
             <View style={{width:'90%', borderRadius:10, marginTop:30}}>
                 <View style={stylesAccount.badgeContainer}>
