@@ -96,16 +96,14 @@ export const StepsService = {
         const arrayOfMonth = [];
 
         // Fonction pour obtenir les mois entre deux dates
-            var currentDate = new Date(fiveMonthAgo);
+        var currentDate = new Date(fiveMonthAgo);
 
-            while (currentDate <= now) {
+        while (currentDate <= now) {
 
-                arrayOfMonth.push(parseInt(currentDate.getMonth()));
+            arrayOfMonth.push(parseInt(currentDate.getMonth()));
 
-                currentDate.setMonth(currentDate.getMonth() + 1);
-            }  
-
-        arrayOfMonth.sort((a, b) => a - b);
+            currentDate.setMonth(currentDate.getMonth() + 1);
+        }  
 
         return arrayOfMonth;
 
