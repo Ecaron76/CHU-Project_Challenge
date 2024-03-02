@@ -38,6 +38,7 @@ export default function Chart({delay, stepsData}) {
         allDays.push(formattedDay);
       }
       labelsDelay = allDays
+      stepsCount = stepsData[2]?.map(item => item.count)
       break
     case 'semaines':
       const currentWeekNumber = getISOWeek(currentDate);
