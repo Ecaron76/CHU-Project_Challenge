@@ -29,7 +29,7 @@ export const StepsChallengeService = {
     return totalStepsForToday;
   },
   
-  getWeeklySteps: async function () {
+  getWeekSteps: async function () {
     const today = new Date();
     const startOfWeek = new Date(today);
     startOfWeek.setHours(0, 0, 0, 0);
@@ -56,7 +56,6 @@ export const StepsChallengeService = {
   getMonthSteps: async function () {
     const today = new Date()
     const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-    console.log(firstDayOfMonth)
   
     let { data: monthly_challenge_steps, error } = await supabase
       .from("daily_user_steps")

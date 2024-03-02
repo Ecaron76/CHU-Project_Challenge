@@ -32,7 +32,7 @@ export default function StatsPage() {
     const getWeekSteps = async () => {
 
         // stepsData est un tableau qui contient 3 tableaux => 1- les 5 derniers mois / 2- les 5 dernières semaines / 3- les 5 derniers jours. 
-        const stepsData = await StepsChallengeService.getWeeklySteps();
+        const stepsData = await StepsChallengeService.getWeekSteps();
 
         // Contient le tableau de données necessaire pour remplir le composant graphique de pas. C'est un tableau qui contient trois tableau. 
         //1) les mois 2) les semaines 3) les jours.
