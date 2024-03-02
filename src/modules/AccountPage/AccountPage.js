@@ -7,7 +7,6 @@ import { useIsFocused } from '@react-navigation/native';
 
 
 export default function AccountPage() {
-
     const [arrayOfStepsDatas, setArrayOfStepsDatas] = useState([]);
     const {chuId, password, isLogged, setChuId, setPassword, setIsLogged, pkId, setPkId, challengeId, setChallengeId } = loginStore();
     const [selectedOption, setSelectedOption] = useState('mois');
@@ -92,7 +91,7 @@ export default function AccountPage() {
             
      
             <View style={{ width: '85%', height:'30%', alignSelf: 'center', }}>
-                {/* <Chart delay={selectedOption} stepsData={arrayOfStepsDatas}/> */}
+                <Chart delay={selectedOption} stepsData={arrayOfStepsDatas}/>
             </View>
             <View style={{width:'90%', borderRadius:10, marginTop:30}}>
                 <View style={stylesAccount.badgeContainer}>
