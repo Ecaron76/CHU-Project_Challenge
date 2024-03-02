@@ -92,9 +92,9 @@ export default function AccountPage() {
             
      
             <View style={{ width: '90%', height:'30%', alignSelf: 'center',}}>
-                <Chart />
+                <Chart delay={selectedOption}/>
             </View>
-            <View style={{width:'90%', borderRadius:10}}>
+            <View style={{width:'90%', borderRadius:10, marginTop:30}}>
                 <View style={stylesAccount.badgeContainer}>
                     <Image
                         source={require('../../../assets/images/badges/badge-turtle.png')}
@@ -122,7 +122,7 @@ export default function AccountPage() {
                     />
                 </View>
             </View>
-            </View>
+        </View>
         
     );
 }
