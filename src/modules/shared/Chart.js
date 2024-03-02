@@ -21,7 +21,8 @@ import {
   };
 
   
-export default function Chart({delay}) {
+export default function Chart({delay, stepsData}) {
+  console.log(stepsData)
   const currentDate = new Date();
   const allDays = [];
   switch (delay) {
@@ -41,11 +42,9 @@ export default function Chart({delay}) {
       break;
     case 'mois':
       const allMonths = ["Janv.", "Févr.", "Mars", "Avri.", "Mai", "Juin", "Juil.", "Août", "Sept.", "Octo.", "Nove.", "Déce."];
-      const currentMonthIndex = allMonths.findIndex(month => format(currentDate, 'MMMM', { locale: fr }) === month);
-      const monthsCount = allMonths.length;
-      const shiftedMonths = Array.from({ length: 5 }, (_, i) => allMonths[(currentMonthIndex + i - 2 + monthsCount) % monthsCount]);
-        
-      labelsDelay= shiftedMonths
+      let fiveMonths = stepsData[0]
+      labelsDelay = fiveMonths?.map(item => allMonths[item.month]);
+      stepsCount= stepsData[0]?.map(item => item.count)
       break;
     default:
       break;
@@ -54,13 +53,14 @@ export default function Chart({delay}) {
     labels: labelsDelay,
     datasets: [
       {
-        data: [2500, 7300, 4300, 10000,12222],
+        data: stepsCount,
         color: (opacity = 1) => `rgba(0, 180, 236, ${opacity})`, // optional
         strokeWidth: 2 // optional
       }
     ],
     
   };
+  
   return (
       <LineChart
         data={data}

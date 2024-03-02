@@ -1,15 +1,39 @@
 import {View, Button, Text, Image, StyleSheet, Pressable, Dimensions, TouchableOpacity} from 'react-native';
 import Chart from '../shared/Chart';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { StepsService } from '../../services/StepsService/StepsService.js';
+import { loginStore } from "../../store/loginStore";
+import { useIsFocused } from '@react-navigation/native';
 
 
 export default function AccountPage() {
-    const [selectedOption, setSelectedOption] = useState('mois');
 
-  const handleOptionPress = (option) => {
-    setSelectedOption(option);
-    
-  };
+    const [arrayOfStepsDatas, setArrayOfStepsDatas] = useState([]);
+    const {chuId, password, isLogged, setChuId, setPassword, setIsLogged, pkId, setPkId, challengeId, setChallengeId } = loginStore();
+    const [selectedOption, setSelectedOption] = useState('mois');
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        if(isFocused){ 
+            getStepsData();
+        }
+    }, [isFocused]);
+
+    const getStepsData = async () => {
+
+        // stepsData est un tableau qui contient 3 tableaux => 1- les 5 derniers mois / 2- les 5 dernières semaines / 3- les 5 derniers jours. 
+        const stepsData = await StepsService.getSteps(pkId);
+
+        // Contient le tableau de données necessaire pour remplir le composant graphique de pas. C'est un tableau qui contient trois tableau. 
+        //1) les mois 2) les semaines 3) les jours.
+        setArrayOfStepsDatas(stepsData);
+    };
+
+    const handleOptionPress = (option) => {
+        setSelectedOption(option);
+        
+    };
+
     return (
         <View style={{ width: '100%', height:'100%', alignItems: 'center',backgroundColor: 'white', paddingTop:10}}>
             <View style={stylesAccount.avatar}>
@@ -66,8 +90,8 @@ export default function AccountPage() {
             
             
      
-            <View style={{ width: '90%', height:'30%', alignSelf: 'center',}}>
-                <Chart delay={selectedOption}/>
+            <View style={{ width: '85%', height:'30%', alignSelf: 'center', }}>
+                <Chart delay={selectedOption} stepsData={arrayOfStepsDatas}/>
             </View>
             <View style={{width:'90%', borderRadius:10, marginTop:30}}>
                 <View style={stylesAccount.badgeContainer}>
@@ -183,6 +207,4 @@ const stylesAccount = StyleSheet.create({
         shadowRadius: 1.51,
         elevation: 2
     }
-    
-
 });
