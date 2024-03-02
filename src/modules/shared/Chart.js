@@ -27,7 +27,6 @@ import {
   };
   
 export default function Chart({delay, stepsData}) {
-  console.log(stepsData)
   const currentDate = new Date();
   const allDays = [];
   switch (delay) {
