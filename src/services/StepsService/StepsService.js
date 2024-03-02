@@ -158,7 +158,7 @@ export const StepsService = {
             });
 
             // on push un object avec la date du lundi de la semaine en cours d'itération avec le nombre de pas.
-            arrayOfWeeks.push({[this.monday.toJSON().substring(0,10)]: stepsNumber});
+            arrayOfWeeks.push({count: stepsNumber});
             
             // On reset le count pour la prochaine semaine.
             stepsNumber=0;
