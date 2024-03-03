@@ -4,10 +4,13 @@ import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState } from 'react';
 import Indicator from '../shared/Indicator';
 import Chart from '../shared/Chart';
+import { loginStore } from "../../store/loginStore";
+
 
 export default function StatsPage() {
-    const [selectedOption, setSelectedOption] = useState('mois');
 
+    const {challengeId} = loginStore();
+    const [selectedOption, setSelectedOption] = useState('mois');
     const [allSteps, setAllSteps] = useState();
     const [daySteps, setDaySteps] = useState();
     const [weekSteps, setWeekSteps] = useState();
@@ -15,17 +18,19 @@ export default function StatsPage() {
     const isFocused = useIsFocused();
 
     useEffect(() => {
+        console.log(challengeId);
+
         if(isFocused){ 
-            getAllSteps()
+            getAllSteps(challengeId)
             getWeekSteps()
-            getDaySteps()
+            getDaySteps(challengeId)
             getMonthSteps()
         }
     }, [isFocused]);
-    const getAllSteps = async () => {
+    const getAllSteps = async (challengeId) => {
 
         // stepsData est un tableau qui contient 3 tableaux => 1- les 5 derniers mois / 2- les 5 dernières semaines / 3- les 5 derniers jours. 
-        const stepsData = await StepsChallengeService.getAllSteps();
+        const stepsData = await StepsChallengeService.getAllSteps(challengeId);
 
         // Contient le tableau de données necessaire pour remplir le composant graphique de pas. C'est un tableau qui contient trois tableau. 
         //1) les mois 2) les semaines 3) les jours.
@@ -42,10 +47,10 @@ export default function StatsPage() {
         
         setWeekSteps(stepsData)
     }; 
-    const getDaySteps = async () => {
+    const getDaySteps = async (challengeId) => {
 
         // stepsData est un tableau qui contient 3 tableaux => 1- les 5 derniers mois / 2- les 5 dernières semaines / 3- les 5 derniers jours. 
-        const stepsData = await StepsChallengeService.getDaySteps();
+        const stepsData = await StepsChallengeService.getDaySteps(challengeId);
 
         // Contient le tableau de données necessaire pour remplir le composant graphique de pas. C'est un tableau qui contient trois tableau. 
         //1) les mois 2) les semaines 3) les jours.
