@@ -33,23 +33,24 @@ export const StepsChallengeService = {
     // Afficher du lundi du début de semaine au jour actuel de la semaine.
     const today = new Date();
     const startOfWeek = new Date(today);
-    startOfWeek.setHours(0, 0, 0, 0);
+    startOfWeek.setDate(today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1));
 
-    const endOfWeek = new Date(today);
-    endOfWeek.setDate(endOfWeek.getDate() + (6 - today.getDay()));
-    endOfWeek.setHours(23, 59, 59, 999);
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() +6);
+    console.log(endOfWeek)
 
-    console.log(startOfWeek);
-    console.log(endOfWeek);
-
-    // const { data, error } = await supabase.rpc('get_steps_challenge_day_count',{id_param: 1, ... startOfWeek, ... endOfWeek });
-
-    // if (error) {
-    //   console.error("Erreur lors de la récupération des données :", error);
-    //   return null; 
-    // }
+    const { data, error } = await supabase.rpc('get_steps_challenge_week_count', {
+        id_param: 1,
+        start_of_week: startOfWeek,
+        end_of_week: endOfWeek
+      });
+    console.log(data)
+    if (error) {
+      console.error("Erreur lors de la récupération des données :", error);
+      return null; 
+    }
   
-    //return data;
+    return data;
     
   },
   getMonthSteps: async function () {
