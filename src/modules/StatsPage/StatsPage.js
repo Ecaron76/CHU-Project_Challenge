@@ -18,13 +18,12 @@ export default function StatsPage() {
     const isFocused = useIsFocused();
 
     useEffect(() => {
-        console.log(challengeId);
 
         if(isFocused){ 
             getAllSteps(challengeId)
-            getWeekSteps()
+            getWeekSteps(challengeId)
             getDaySteps(challengeId)
-            getMonthSteps()
+            getMonthSteps(challengeId)
         }
     }, [isFocused]);
     const getAllSteps = async (challengeId) => {
@@ -37,10 +36,10 @@ export default function StatsPage() {
         
         setAllSteps(stepsData)
     }; 
-    const getWeekSteps = async () => {
+    const getWeekSteps = async (challengeId) => {
 
         // stepsData est un tableau qui contient 3 tableaux => 1- les 5 derniers mois / 2- les 5 dernières semaines / 3- les 5 derniers jours. 
-        const stepsData = await StepsChallengeService.getWeekSteps();
+        const stepsData = await StepsChallengeService.getWeekSteps(challengeId);
 
         // Contient le tableau de données necessaire pour remplir le composant graphique de pas. C'est un tableau qui contient trois tableau. 
         //1) les mois 2) les semaines 3) les jours.
@@ -57,10 +56,10 @@ export default function StatsPage() {
         
         setDaySteps(stepsData)
     }; 
-    const getMonthSteps = async () => {
+    const getMonthSteps = async (challengeId) => {
 
         // stepsData est un tableau qui contient 3 tableaux => 1- les 5 derniers mois / 2- les 5 dernières semaines / 3- les 5 derniers jours. 
-        const stepsData = await StepsChallengeService.getMonthSteps();
+        const stepsData = await StepsChallengeService.getMonthSteps(challengeId);
 
         // Contient le tableau de données necessaire pour remplir le composant graphique de pas. C'est un tableau qui contient trois tableau. 
         //1) les mois 2) les semaines 3) les jours.

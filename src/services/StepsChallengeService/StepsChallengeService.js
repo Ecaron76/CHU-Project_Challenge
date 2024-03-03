@@ -5,8 +5,7 @@ import { supabase } from "../supabase/supabase";
 
 export const StepsChallengeService = {
   getAllSteps: async function (challengeId) {
-
-    console.log(challengeId);
+    
 
       const { data, error } = await supabase.rpc('get_steps_challenge_total_count',{id_param: challengeId});
 
@@ -37,14 +36,14 @@ export const StepsChallengeService = {
 
     const endOfWeek = new Date(startOfWeek);
     endOfWeek.setDate(startOfWeek.getDate() +6);
-    console.log(endOfWeek)
+    
 
     const { data, error } = await supabase.rpc('get_steps_challenge_week_count', {
         id_param: 1,
         start_of_week: startOfWeek,
         end_of_week: endOfWeek
       });
-    console.log(data)
+    
     if (error) {
       console.error("Erreur lors de la récupération des données :", error);
       return null; 
@@ -54,22 +53,28 @@ export const StepsChallengeService = {
     
   },
   getMonthSteps: async function () {
-    const today = new Date()
-    const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
-  
-    let { data: monthly_challenge_steps, error } = await supabase
-      .from("daily_user_steps")
-      .select("count")
-      .gte("date", firstDayOfMonth.toISOString().split("T")[0])
-      .lte("date", today.toISOString().split("T")[0]);
-  
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1); 
+    startOfMonth.setHours(0, 0, 0, 0);
+
+    const endOfMonth = new Date(startOfMonth);
+    endOfMonth.setMonth(endOfMonth.getMonth() + 1); 
+    endOfMonth.setDate(endOfMonth.getDate() - 1);
+    endOfMonth.setHours(23, 59, 59, 999);
+    
+
+    const { data, error } = await supabase.rpc('get_steps_challenge_month_count', {
+        id_param: 1,
+        start_of_month: startOfMonth,
+        end_of_month: endOfMonth,
+    });
+    
+
     if (error) {
-      console.error("Erreur lors de la récupération des données :", error);
-      return null; 
+        console.error("Erreur lors de la récupération des données :", error);
+        return null;
     }
 
-    const totalStepsForMonth = monthly_challenge_steps.reduce((sum, item) => sum + item.count, 0);
-  
-    return totalStepsForMonth;
-  }
-};
+    return data;
+    }
+}
