@@ -84,13 +84,13 @@ export default function StatsPage() {
                     <TouchableOpacity
                         style={[
                             stylesStats.option,
-                            selectedOption === 'jours' && stylesAccount.selectedOption,
+                            selectedOption === 'jours' && stylesStats.selectedOption,
                         ]}
                         onPress={() => handleOptionPress('jours')}
                     >
                         <Text style={[
                             stylesStats.optionText,
-                            selectedOption === 'jours' && stylesAccount.selectedOptionText,
+                            selectedOption === 'jours' && stylesStats.selectedOptionText,
                         ]}>Jours</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
