@@ -12,7 +12,7 @@ export default function AccountPage() {
     const {chuId, password, isLogged, setChuId, setPassword, setIsLogged, pkId, setPkId, challengeId, setChallengeId } = loginStore();
     const [selectedOption, setSelectedOption] = useState('mois');
     const [displayText, setDisplayText] = useState('Ce mois-ci');
-    const [stepsValue, setStepsValue] = useState(arrayOfStepsDatas[0])
+    const [stepsValue, setStepsValue] = useState()
     const isFocused = useIsFocused();
 
     useEffect(() => {
@@ -36,25 +36,34 @@ export default function AccountPage() {
         setSelectedOption(option);        
     };
     useEffect(() => {
-        // Update the displayText based on the selected option
-        switch (selectedOption) {
-          case 'jours':
-            setStepsValue(arrayOfStepsDatas[2][arrayOfStepsDatas[0].length - 1].count)
-            setDisplayText("pas aujourd'hui");
-            console.log(stepsValue)
-            break;
-          case 'semaines':
-            setStepsValue(arrayOfStepsDatas[1][arrayOfStepsDatas[0].length - 1].count)
-            setDisplayText('pas cette semaine');
-            break;
-          case 'mois':
-            setStepsValue(arrayOfStepsDatas[0][arrayOfStepsDatas[0].length - 1].count)
-            setDisplayText('pas ce mois-ci');
-            break;
-          default:
-            setDisplayText('pas ce mois-ci');
+        if (arrayOfStepsDatas.length > 0) {
+            switch (selectedOption) {
+                case 'jours':
+                    if (arrayOfStepsDatas[2] && arrayOfStepsDatas[2].length > 0) {
+                        setStepsValue(arrayOfStepsDatas[2][arrayOfStepsDatas[2].length - 1].count);
+                        setDisplayText("pas aujourd'hui");
+                    }
+                    break;
+                case 'semaines':
+                    if (arrayOfStepsDatas[1] && arrayOfStepsDatas[1].length > 0) {
+                        setStepsValue(arrayOfStepsDatas[1][arrayOfStepsDatas[1].length - 1].count);
+                        setDisplayText('pas cette semaine');
+                    }
+                    break;
+                case 'mois':
+                    if (arrayOfStepsDatas[0] && arrayOfStepsDatas[0].length > 0) {
+                        setStepsValue(arrayOfStepsDatas[0][arrayOfStepsDatas[0].length - 1].count);
+                        setDisplayText('pas ce mois-ci');
+                    }
+                    break;
+                default:
+                    if (arrayOfStepsDatas[0] && arrayOfStepsDatas[0].length > 0) {
+                        setStepsValue(arrayOfStepsDatas[0][arrayOfStepsDatas[0].length - 1].count);
+                        setDisplayText('pas ce mois-ci');
+                    }
+            }
         }
-      }, [selectedOption]);
+    }, [selectedOption, arrayOfStepsDatas]);
 
     return (
         <View style={{ width: '100%', height:'100%', alignItems: 'center',backgroundColor: 'white', paddingTop:10}}>
