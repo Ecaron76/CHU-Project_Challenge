@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from 'react';
 import React from 'react'
 import { PedometerService } from '../../services/PedometerService/PedometerService';
 import { loginStore } from "../../store/loginStore";
-import Indicator from './components/Indicator'
+import Indicator from '../shared/Indicator'
 import RingProgress from './components/RingProgresss'
 // import useHealthData from '../../hooks/useHealthData';
 
