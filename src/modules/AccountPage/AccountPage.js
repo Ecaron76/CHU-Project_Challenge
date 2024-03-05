@@ -39,25 +39,25 @@ export default function AccountPage() {
         if (arrayOfStepsDatas.length > 0) {
             switch (selectedOption) {
                 case 'jours':
-                    if (arrayOfStepsDatas[2] && arrayOfStepsDatas[2].length > 0) {
+                    if (arrayOfStepsDatas[2] && arrayOfStepsDatas[2]?.length > 0) {
                         setStepsValue(arrayOfStepsDatas[2][arrayOfStepsDatas[2].length - 1].count);
                         setDisplayText("pas aujourd'hui");
                     }
                     break;
                 case 'semaines':
-                    if (arrayOfStepsDatas[1] && arrayOfStepsDatas[1].length > 0) {
+                    if (arrayOfStepsDatas[1] && arrayOfStepsDatas[1]?.length > 0) {
                         setStepsValue(arrayOfStepsDatas[1][arrayOfStepsDatas[1].length - 1].count);
                         setDisplayText('pas cette semaine');
                     }
                     break;
                 case 'mois':
-                    if (arrayOfStepsDatas[0] && arrayOfStepsDatas[0].length > 0) {
+                    if (arrayOfStepsDatas[0] && arrayOfStepsDatas[0]?.length > 0) {
                         setStepsValue(arrayOfStepsDatas[0][arrayOfStepsDatas[0].length - 1].count);
                         setDisplayText('pas ce mois-ci');
                     }
                     break;
                 default:
-                    if (arrayOfStepsDatas[0] && arrayOfStepsDatas[0].length > 0) {
+                    if (arrayOfStepsDatas[0] && arrayOfStepsDatas[0]?.length > 0) {
                         setStepsValue(arrayOfStepsDatas[0][arrayOfStepsDatas[0].length - 1].count);
                         setDisplayText('pas ce mois-ci');
                     }
@@ -122,7 +122,7 @@ export default function AccountPage() {
             
      
             <View style={{ width: '85%', height:'30%', alignSelf: 'center', }}>
-                <Chart delay={selectedOption} stepsData={arrayOfStepsDatas}/>
+                {arrayOfStepsDatas.length > 0 ? <Chart delay={selectedOption} stepsData={arrayOfStepsDatas} /> : null}
             </View>
             <View style={{width:'90%', borderRadius:10, marginTop:30}}>
                 <View style={stylesAccount.badgeContainer}>
