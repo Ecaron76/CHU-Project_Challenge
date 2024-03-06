@@ -1,7 +1,7 @@
 import {View, Button, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import { StepsChallengeService } from '../../services/StepsChallengeService/StepsChallengeService';
 import { useIsFocused } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import Indicator from '../shared/Indicator';
 import Chart from '../shared/Chart';
 import { loginStore } from "../../store/loginStore";
@@ -11,73 +11,46 @@ export default function StatsPage() {
 
     const {challengeId} = loginStore();
     const [selectedOption, setSelectedOption] = useState('mois');
-    const [allSteps, setAllSteps] = useState();
-    const [daySteps, setDaySteps] = useState();
-    const [weekSteps, setWeekSteps] = useState();
-    const [monthSteps, setMonthSteps] = useState();
+    const [allSteps, setAllSteps] = useState(0);
+    const [stepsData, setStepsData] = useState([]);
     const isFocused = useIsFocused();
 
     useEffect(() => {
 
         if(isFocused){ 
-            getAllSteps(challengeId)
-            getWeekSteps(challengeId)
-            getDaySteps(challengeId)
-            getMonthSteps(challengeId)
+
+            getSteps();
         }
+
     }, [isFocused]);
-    const getAllSteps = async (challengeId) => {
 
-        // stepsData est un tableau qui contient 3 tableaux => 1- les 5 derniers mois / 2- les 5 dernières semaines / 3- les 5 derniers jours. 
-        const stepsData = await StepsChallengeService.getAllSteps(challengeId);
+    // Récupère les pas total ainsi que le tableau avec l'ensemble des valeurs (mois, semaines, jours).
+    const getSteps = async () => {
 
-        // Contient le tableau de données necessaire pour remplir le composant graphique de pas. C'est un tableau qui contient trois tableau. 
-        //1) les mois 2) les semaines 3) les jours.
-        
-        setAllSteps(stepsData)
-    }; 
-    const getWeekSteps = async (challengeId) => {
+        const stepsDataTotal = await StepsChallengeService.getAllSteps(challengeId);
+        setAllSteps(stepsDataTotal);
 
-        // stepsData est un tableau qui contient 3 tableaux => 1- les 5 derniers mois / 2- les 5 dernières semaines / 3- les 5 derniers jours. 
-        const stepsData = await StepsChallengeService.getWeekSteps(challengeId);
+        const allSteps = await StepsChallengeService.doCallsAndMakeArray(challengeId);
+        setStepsData(allSteps);
 
-        // Contient le tableau de données necessaire pour remplir le composant graphique de pas. C'est un tableau qui contient trois tableau. 
-        //1) les mois 2) les semaines 3) les jours.
-        
-        setWeekSteps(stepsData)
-    }; 
-    const getDaySteps = async (challengeId) => {
+        console.log(allSteps);
 
-        // stepsData est un tableau qui contient 3 tableaux => 1- les 5 derniers mois / 2- les 5 dernières semaines / 3- les 5 derniers jours. 
-        const stepsData = await StepsChallengeService.getDaySteps(challengeId);
+    };
 
-        // Contient le tableau de données necessaire pour remplir le composant graphique de pas. C'est un tableau qui contient trois tableau. 
-        //1) les mois 2) les semaines 3) les jours.
-        
-        setDaySteps(stepsData)
-    }; 
-    const getMonthSteps = async (challengeId) => {
-
-        // stepsData est un tableau qui contient 3 tableaux => 1- les 5 derniers mois / 2- les 5 dernières semaines / 3- les 5 derniers jours. 
-        const stepsData = await StepsChallengeService.getMonthSteps(challengeId);
-
-        // Contient le tableau de données necessaire pour remplir le composant graphique de pas. C'est un tableau qui contient trois tableau. 
-        //1) les mois 2) les semaines 3) les jours.
-        
-        setMonthSteps(stepsData)
-    }; 
     const handleOptionPress = (option) => {
         setSelectedOption(option);
-        
     };
+
     return (
         <View style={{width: '100%', height: '100%', padding:10, alignItems:'center'}}>
             <Text style={{fontSize:25, fontWeight: 'bold', textAlign:'center', marginBottom:20}}> Accomplissement du challenge</Text>
             <View style={{gap:20, width:"100%"}}>
                 <Indicator textIndicator="pas totaux" valueIndicator={allSteps}/>
-                <Indicator textIndicator="pas ce mois-ci" valueIndicator={monthSteps}/>
-                <Indicator textIndicator="pas cette semaine" valueIndicator={weekSteps}/>
-                <Indicator textIndicator="pas aujourd'hui" valueIndicator={daySteps}/>
+                {  /* stepsData[0] = mois , stepsData[1] = semaines, stepsData[2] = jours. 
+                    [4] signifie la dernière valeur du tableau soit celle de la semaine du mois ou du jour actuel. NE PAS ENLEVER LE CONDITIONAL RENDERING !! */ }
+                <Indicator textIndicator="pas ce mois-ci" valueIndicator={stepsData.length !== 0 && stepsData[0][4].count}/>
+                <Indicator textIndicator="pas cette semaine" valueIndicator={stepsData.length !== 0 && stepsData[1][4].count}/>
+                <Indicator textIndicator="pas aujourd'hui" valueIndicator={stepsData.length !== 0 && stepsData[2][4].count}/>
             </View>
             <View style={{width:'70%', alignItems:'center', }}>
                 <View style={stylesStats.testa}>
@@ -125,6 +98,7 @@ export default function StatsPage() {
             
      
             <View style={{ width: '85%', height:'30%', alignSelf: 'center', }}>
+                {/* Bien penser à mettre du conditional rendering car ca met trois plombes de charger les données. Il va falloir mettre un splash screen. */}
                 {/* <Chart delay={selectedOption} stepsData={arrayOfStepsDatas}/> */}
             </View>
         </View>
