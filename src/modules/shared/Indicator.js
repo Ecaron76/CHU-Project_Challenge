@@ -6,7 +6,6 @@ const Indicator = ({iconIndicator, textIndicator, valueIndicator, iconLevel}) =>
     <View style={stylesIndicator.indicatorItem}>
       <View style={{flexDirection: 'row', alignItems:'center'}}>
       {iconIndicator && (<Image source={iconIndicator} style={{height:'80%', width:'20%',  resizeMode: 'contain'}} />)}
-        
         <Text style={{paddingLeft:10}}>
           <Text style={{fontSize: 45, fontWeight: 800, letterSpacing:5}}>{valueIndicator}</Text>
           <Text>{textIndicator}</Text>

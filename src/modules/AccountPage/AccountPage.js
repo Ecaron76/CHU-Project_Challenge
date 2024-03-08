@@ -10,6 +10,8 @@ export default function AccountPage() {
     const [arrayOfStepsDatas, setArrayOfStepsDatas] = useState([]);
     const {chuId, password, isLogged, setChuId, setPassword, setIsLogged, pkId, setPkId, challengeId, setChallengeId } = loginStore();
     const [selectedOption, setSelectedOption] = useState('mois');
+    const [displayText, setDisplayText] = useState('Ce mois-ci');
+    const [stepsValue, setStepsValue] = useState()
     const isFocused = useIsFocused();
 
     useEffect(() => {
@@ -29,9 +31,37 @@ export default function AccountPage() {
     };
     
     const handleOptionPress = (option) => {
-        setSelectedOption(option);
-        
+        setSelectedOption(option);        
     };
+    useEffect(() => {
+        if (arrayOfStepsDatas.length > 0) {
+            switch (selectedOption) {
+                case 'jours':
+                    if (arrayOfStepsDatas[2] && arrayOfStepsDatas[2]?.length > 0) {
+                        setStepsValue(arrayOfStepsDatas[2][arrayOfStepsDatas[2].length - 1].count);
+                        setDisplayText("pas aujourd'hui");
+                    }
+                    break;
+                case 'semaines':
+                    if (arrayOfStepsDatas[1] && arrayOfStepsDatas[1]?.length > 0) {
+                        setStepsValue(arrayOfStepsDatas[1][arrayOfStepsDatas[1].length - 1].count);
+                        setDisplayText('pas cette semaine');
+                    }
+                    break;
+                case 'mois':
+                    if (arrayOfStepsDatas[0] && arrayOfStepsDatas[0]?.length > 0) {
+                        setStepsValue(arrayOfStepsDatas[0][arrayOfStepsDatas[0].length - 1].count);
+                        setDisplayText('pas ce mois-ci');
+                    }
+                    break;
+                default:
+                    if (arrayOfStepsDatas[0] && arrayOfStepsDatas[0]?.length > 0) {
+                        setStepsValue(arrayOfStepsDatas[0][arrayOfStepsDatas[0].length - 1].count);
+                        setDisplayText('pas ce mois-ci');
+                    }
+            }
+        }
+    }, [selectedOption, arrayOfStepsDatas]);
 
     return (
         <View style={{ width: '100%', height:'100%', alignItems: 'center',backgroundColor: 'white', paddingTop:10}}>
@@ -42,8 +72,8 @@ export default function AccountPage() {
                 />
             </View>
             <View style={{width:'70%', alignItems:'center' }}>
-                <Text style={{fontSize: 45, fontWeight:'bold'}}> 217 063 </Text>
-                <Text>pas ce mois-ci</Text>
+                <Text style={{fontSize: 45, fontWeight:'bold'}}>{stepsValue} </Text>
+                <Text>{displayText}</Text>
                 <View style={stylesAccount.testa}>
                     <TouchableOpacity
                         style={[
@@ -90,7 +120,7 @@ export default function AccountPage() {
             
      
             <View style={{ width: '85%', height:'30%', alignSelf: 'center', }}>
-                <Chart delay={selectedOption} stepsData={arrayOfStepsDatas}/> 
+                {arrayOfStepsDatas.length > 0 ? <Chart delay={selectedOption} stepsData={arrayOfStepsDatas} /> : null}
             </View>
             <View style={{width:'90%', borderRadius:10, marginTop:30}}>
                 <View style={stylesAccount.badgeContainer}>
