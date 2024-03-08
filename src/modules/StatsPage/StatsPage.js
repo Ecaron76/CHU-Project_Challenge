@@ -30,10 +30,13 @@ export default function StatsPage() {
         const stepsDataTotal = await StepsChallengeService.getAllSteps(challengeId);
         setAllSteps(stepsDataTotal);
 
-        const allSteps = await StepsChallengeService.doCallsAndMakeArray(challengeId);
-        setStepsData(allSteps);
+        const stepsArray = await StepsChallengeService.doCallsAndMakeArray(challengeId);
+        setStepsData(stepsArray);
 
-        console.log(allSteps);
+        console.log(allSteps)
+        
+        console.log(stepsData.length)
+        console.log(stepsData)
 
     };
 
@@ -45,12 +48,10 @@ export default function StatsPage() {
         <View style={{width: '100%', height: '100%', padding:10, alignItems:'center'}}>
             <Text style={{fontSize:25, fontWeight: 'bold', textAlign:'center', marginBottom:20}}> Accomplissement du challenge</Text>
             <View style={{gap:20, width:"100%"}}>
-                <Indicator textIndicator="pas totaux" valueIndicator={allSteps}/>
-                {  /* stepsData[0] = mois , stepsData[1] = semaines, stepsData[2] = jours. 
-                    [4] signifie la dernière valeur du tableau soit celle de la semaine du mois ou du jour actuel. NE PAS ENLEVER LE CONDITIONAL RENDERING !! */ }
-                <Indicator textIndicator="pas ce mois-ci" valueIndicator={stepsData.length !== 0 && stepsData[0][4].count}/>
-                <Indicator textIndicator="pas cette semaine" valueIndicator={stepsData.length !== 0 && stepsData[1][4].count}/>
-                <Indicator textIndicator="pas aujourd'hui" valueIndicator={stepsData.length !== 0 && stepsData[2][4].count}/>
+                {allSteps ? <Indicator textIndicator="pas totaux" valueIndicator={allSteps}/> : null}
+                {stepsData.length > 0 ? <Indicator textIndicator="pas ce mois-ci" valueIndicator={stepsData[0][4]?.count}/> : null}
+                {stepsData.length > 0 ? <Indicator textIndicator="pas cette semaine" valueIndicator={stepsData[1][4]?.count} />: null}
+                {stepsData.length > 0 ? <Indicator textIndicator="pas aujourd'hui" valueIndicator={stepsData[2][4]?.count}/>: null}
             </View>
             <View style={{width:'70%', alignItems:'center', }}>
                 <View style={stylesStats.testa}>
@@ -99,7 +100,7 @@ export default function StatsPage() {
      
             <View style={{ width: '85%', height:'30%', alignSelf: 'center', }}>
                 {/* Bien penser à mettre du conditional rendering car ca met trois plombes de charger les données. Il va falloir mettre un splash screen. */}
-                {/* <Chart delay={selectedOption} stepsData={arrayOfStepsDatas}/> */}
+                { stepsData.length > 0 ? <Chart delay={selectedOption} stepsData={stepsData} /> : null}
             </View>
         </View>
     );
