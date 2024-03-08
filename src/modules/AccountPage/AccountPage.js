@@ -7,7 +7,6 @@ import { useIsFocused } from '@react-navigation/native';
 
 
 export default function AccountPage() {
-
     const [arrayOfStepsDatas, setArrayOfStepsDatas] = useState([]);
     const {chuId, password, isLogged, setChuId, setPassword, setIsLogged, pkId, setPkId, challengeId, setChallengeId } = loginStore();
     const [selectedOption, setSelectedOption] = useState('mois');
@@ -29,7 +28,6 @@ export default function AccountPage() {
         // Contient le tableau de données necessaire pour remplir le composant graphique de pas. C'est un tableau qui contient trois tableau. 
         //1) les mois 2) les semaines 3) les jours.
         setArrayOfStepsDatas(stepsData);
-        console.log(stepsData)
     };
     
     const handleOptionPress = (option) => {
