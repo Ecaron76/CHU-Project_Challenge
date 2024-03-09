@@ -30,7 +30,7 @@ export default function StatsPage() {
         const stepsDataTotal = await StepsChallengeService.getAllSteps(challengeId);
         setAllSteps(stepsDataTotal);
 
-        const stepsArray = await StepsChallengeService.doCallsAndMakeArray(challengeId);
+        const stepsArray = await StepsChallengeService.getStepsData(challengeId);
         setStepsData(stepsArray);
 
         console.log(allSteps)
