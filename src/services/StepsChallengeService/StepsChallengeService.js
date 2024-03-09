@@ -27,7 +27,7 @@ export const StepsChallengeService = {
       return null; 
     }
 
-    const returnObject = {count: data, date: new Date().toJSON().substring(0,10)};
+    const returnObject = {count: data === null ? 0: data, date: new Date().toJSON().substring(0,10)};
   
     return returnObject;
   },
@@ -227,7 +227,7 @@ getDaysStepsStoredData: async function (challengeId) {
     return null;
   }
 },
-doCallsAndMakeArray: async function (challengeId) {
+getStepsData: async function (challengeId) {
 
   const arrayOfSteps = []; 
 
