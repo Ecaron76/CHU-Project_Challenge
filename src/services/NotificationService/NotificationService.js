@@ -5,7 +5,7 @@ export const NotificationService = {
         try  {
             let { data: notificationInfos, notificationError } = await supabase
                 .from('notification')
-                .select('*, message(*)')
+                .select('*')
                 .eq('sent', true);
 
             return notificationInfos;

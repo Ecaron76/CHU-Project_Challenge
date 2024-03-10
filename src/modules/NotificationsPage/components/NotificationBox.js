@@ -16,7 +16,7 @@ export default function NotificationsBox({ notification }) {
                     <View style={styles.modalContent}>
                         <Image style={styles.image} source={require('../images/doctor.png')} />
                         <Text style={styles.modalHeaderMessage}>Message du CHU</Text>
-                        <Text style={styles.modalMessage}>{notification?.message?.content}</Text>
+                        <Text style={styles.modalMessage}>{notification?.content}</Text>
                         <Pressable onPress={closeModal}>
                             <Text style={styles.closeButton}>Fermer</Text>
                         </Pressable>
@@ -28,7 +28,7 @@ export default function NotificationsBox({ notification }) {
                 <Image style={styles.image} source={require('../images/doctor.png')} />
                 <View style={styles.textContainer}>
                     <Text style={styles.message} numberOfLines={3}>
-                        {notification?.message?.content}
+                        {notification?.content}
                     </Text>
                 </View>
             </Pressable>
