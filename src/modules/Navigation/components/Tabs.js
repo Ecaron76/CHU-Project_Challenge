@@ -38,6 +38,7 @@ export default function Tabs() {
       >
          <Tab.Screen name="ActivityPage" component={ActivityPage}
          options={({navigation}) => ({
+             tabBarLabel: 'Activité',
             headerLeft: () => (
                 <NotificationsButton/>
                 ),
@@ -48,6 +49,7 @@ export default function Tabs() {
             })}/>
          <Tab.Screen name="StatsPage" component={StatsPage}
          options={({navigation}) => ({
+             tabBarLabel: 'Stats',
             headerLeft: () => (
                 <NotificationsButton/>
                 ),
@@ -58,6 +60,7 @@ export default function Tabs() {
             })}/>
          <Tab.Screen name="AccountPage" component={AccountPage}
          options={({navigation}) => ({
+             tabBarLabel: 'Compte',
             headerLeft: () => (
                 <NotificationsButton/>
                 ),
