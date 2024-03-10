@@ -51,9 +51,21 @@ export const LoginService = {
         catch (error){
             console.log("An error occured " + error);
         }
+    },
+
+    disconnect: async function () {
+        try {
+            const { error } = await supabase.auth.signOut();
+
+            if (error) {
+                console.error('Error logging out:', error.message);
+            } else {
+                console.log('User logged out successfully');
+            }
+        } catch (error) {
+            console.error('An unexpected error occurred:', error.message);
+        }
     }
-
-
 
 
   } 
