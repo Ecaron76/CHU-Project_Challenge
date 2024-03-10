@@ -1,15 +1,70 @@
 import {View, Button, Text, Image, StyleSheet, Pressable, Dimensions, TouchableOpacity} from 'react-native';
 import Chart from '../shared/Chart';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { StepsService } from '../../services/StepsService/StepsService.js';
+import { loginStore } from "../../store/loginStore";
+import { useIsFocused } from '@react-navigation/native';
 
 
 export default function AccountPage() {
-    const [selectedOption, setSelectedOption] = useState('mois');
 
-  const handleOptionPress = (option) => {
-    setSelectedOption(option);
-    console.log(selectedOption)
-  };
+    const [arrayOfStepsDatas, setArrayOfStepsDatas] = useState([]);
+    const {chuId, password, isLogged, setChuId, setPassword, setIsLogged, pkId, setPkId, challengeId, setChallengeId } = loginStore();
+    const [selectedOption, setSelectedOption] = useState('mois');
+    const [displayText, setDisplayText] = useState('Ce mois-ci');
+    const [stepsValue, setStepsValue] = useState()
+    const isFocused = useIsFocused();
+
+    useEffect(() => {
+        if(isFocused){ 
+            getStepsData();
+        }
+    }, [isFocused]);
+
+    const getStepsData = async () => {
+
+        // stepsData est un tableau qui contient 3 tableaux => 1- les 5 derniers mois / 2- les 5 dernières semaines / 3- les 5 derniers jours. 
+        const stepsData = await StepsService.getSteps(pkId);
+
+        // Contient le tableau de données necessaire pour remplir le composant graphique de pas. C'est un tableau qui contient trois tableau. 
+        //1) les mois 2) les semaines 3) les jours.
+        setArrayOfStepsDatas(stepsData);
+        console.log(stepsData)
+    };
+    
+    const handleOptionPress = (option) => {
+        setSelectedOption(option);        
+    };
+    useEffect(() => {
+        if (arrayOfStepsDatas.length > 0) {
+            switch (selectedOption) {
+                case 'jours':
+                    if (arrayOfStepsDatas[2] && arrayOfStepsDatas[2].length > 0) {
+                        setStepsValue(arrayOfStepsDatas[2][arrayOfStepsDatas[2].length - 1].count);
+                        setDisplayText("pas aujourd'hui");
+                    }
+                    break;
+                case 'semaines':
+                    if (arrayOfStepsDatas[1] && arrayOfStepsDatas[1].length > 0) {
+                        setStepsValue(arrayOfStepsDatas[1][arrayOfStepsDatas[1].length - 1].count);
+                        setDisplayText('pas cette semaine');
+                    }
+                    break;
+                case 'mois':
+                    if (arrayOfStepsDatas[0] && arrayOfStepsDatas[0].length > 0) {
+                        setStepsValue(arrayOfStepsDatas[0][arrayOfStepsDatas[0].length - 1].count);
+                        setDisplayText('pas ce mois-ci');
+                    }
+                    break;
+                default:
+                    if (arrayOfStepsDatas[0] && arrayOfStepsDatas[0].length > 0) {
+                        setStepsValue(arrayOfStepsDatas[0][arrayOfStepsDatas[0].length - 1].count);
+                        setDisplayText('pas ce mois-ci');
+                    }
+            }
+        }
+    }, [selectedOption, arrayOfStepsDatas]);
+
     return (
         <View style={{ width: '100%', height:'100%', alignItems: 'center',backgroundColor: 'white', paddingTop:10}}>
             <View style={stylesAccount.avatar}>
@@ -19,8 +74,8 @@ export default function AccountPage() {
                 />
             </View>
             <View style={{width:'70%', alignItems:'center' }}>
-                <Text style={{fontSize: 45, fontWeight:'bold'}}> 217 063 </Text>
-                <Text>pas ce mois-ci</Text>
+                <Text style={{fontSize: 45, fontWeight:'bold'}}>{stepsValue} </Text>
+                <Text>{displayText}</Text>
                 <View style={stylesAccount.testa}>
                     <TouchableOpacity
                         style={[
@@ -66,10 +121,10 @@ export default function AccountPage() {
             
             
      
-            <View style={{ width: '90%', height:'30%', alignSelf: 'center',}}>
-                <Chart />
+            <View style={{ width: '85%', height:'30%', alignSelf: 'center', }}>
+                <Chart delay={selectedOption} stepsData={arrayOfStepsDatas}/>
             </View>
-            <View style={{width:'90%', borderRadius:10}}>
+            <View style={{width:'90%', borderRadius:10, marginTop:30}}>
                 <View style={stylesAccount.badgeContainer}>
                     <Image
                         source={require('../../../assets/images/badges/badge-turtle.png')}
@@ -97,7 +152,7 @@ export default function AccountPage() {
                     />
                 </View>
             </View>
-            </View>
+        </View>
         
     );
 }
@@ -183,6 +238,4 @@ const stylesAccount = StyleSheet.create({
         shadowRadius: 1.51,
         elevation: 2
     }
-    
-
 });
