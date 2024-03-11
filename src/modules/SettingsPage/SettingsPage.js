@@ -8,12 +8,12 @@ export default function SettingsPage() {
 
     return (
         <View style={{ ...SettingsStyles.container, backgroundColor: theme.backgroundColor }}>
-            <SettingItem
-                iconName="weather-night"
-                text="Mode sombre"
-                hasToggle
-                onToggle={(value) => console.log('Theme:', value)}
-            />
+            {/*<SettingItem*/}
+            {/*    iconName="weather-night"*/}
+            {/*    text="Mode sombre"*/}
+            {/*    hasToggle*/}
+            {/*    onToggle={(value) => console.log('Theme:', value)}*/}
+            {/*/>*/}
             <SettingItem iconName="lock" text="Confidentialité" isPrivacy />
             <SettingItem
                 iconName="exit-to-app"
