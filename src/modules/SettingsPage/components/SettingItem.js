@@ -4,12 +4,13 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { useNavigation } from '@react-navigation/native';
 import SettingsStyles from '../Settings.styles';
 import { ThemeContext } from '../../shared/ThemeContext';
-import {LoginService} from "../../../services/LoginService/LoginService";
+import {loginStore} from "../../../store/loginStore";
 
 const SettingItem = ({ iconName, text, hasToggle, onToggle, isLogout, isPrivacy }) => {
     const navigation = useNavigation();
     const { theme, toggleTheme } = useContext(ThemeContext);
     const [toggleValue, setToggleValue] = useState(theme === 'dark');
+    const { setIsLogged } = loginStore();
 
     const handleToggle = () => {
         const newToggleValue = !toggleValue;
@@ -30,8 +31,7 @@ const SettingItem = ({ iconName, text, hasToggle, onToggle, isLogout, isPrivacy 
                     {
                         text: 'Logout',
                         onPress: async () => {
-                            await LoginService.disconnect();
-                            navigation.navigate('PrivacyPage');
+                            setIsLogged(false);
                         },
                     },
                 ]);
