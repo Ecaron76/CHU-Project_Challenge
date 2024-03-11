@@ -1,11 +1,11 @@
 import { View } from 'react-native';
 import SettingItem from './components/SettingItem';
 import SettingsStyles from './Settings.styles';
-import {themeStore} from "../../store/themeStore";
+// import {themeStore} from "../../store/themeStore";
 import AvatarSettingItem from "./components/AvatarSettingItem";
 
 export default function SettingsPage() {
-    const { setToggle } = themeStore();
+    // const { setToggle } = themeStore();
 
     return (
         <View style={{ ...SettingsStyles.container }}>

@@ -5,27 +5,27 @@ import { useNavigation } from '@react-navigation/native';
 import SettingsStyles from '../Settings.styles';
 import { loginStore } from "../../../store/loginStore";
 import { darkTheme, lightTheme } from "../../shared/Theme";
-import { themeStore } from "../../../store/themeStore";
+// import { themeStore } from "../../../store/themeStore";
 
 const SettingItem = ({ iconName, text, hasToggle, onToggle, isLogout, isPrivacy }) => {
     const navigation = useNavigation();
-    const { appTheme, setAppTheme, toggle, setToggle } = themeStore();
+    // const { appTheme, setAppTheme, toggle, setToggle } = themeStore();
     const { setIsLogged } = loginStore();
 
-    const handleToggle = () => {
-        const newToggleValue = !toggle;
-        setToggle(newToggleValue);
-
-        if (onToggle) {
-            onToggle(newToggleValue);
-
-            setAppTheme((state) => {
-                const newTheme = newToggleValue ? darkTheme : lightTheme;
-                // console.log("Theme = " + newTheme.name);
-                return { ...state, appTheme: newTheme };
-            });
-        }
-    };
+    // const handleToggle = () => {
+    //     const newToggleValue = !toggle;
+    //     setToggle(newToggleValue);
+    //
+    //     if (onToggle) {
+    //         onToggle(newToggleValue);
+    //
+    //         setAppTheme((state) => {
+    //             const newTheme = newToggleValue ? darkTheme : lightTheme;
+    //             // console.log("Theme = " + newTheme.name);
+    //             return { ...state, appTheme: newTheme };
+    //         });
+    //     }
+    // };
 
     const handlePress = () => {
         if (!hasToggle) {

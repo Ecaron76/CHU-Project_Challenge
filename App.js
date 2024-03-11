@@ -8,21 +8,11 @@ import NotificationsPage from "./src/modules/NotificationsPage/NotificationsPage
 import { createStackNavigator } from '@react-navigation/stack';
 import { loginStore } from './src/store/loginStore';
 import PrivacyPage from "./src/modules/SettingsPage/components/PrivacyPage";
-import { themeStore } from "./src/store/themeStore";
 
 export default function App() {
 
 const isLogged = loginStore((state) => state.isLogged);
 console.log("isLogged = " + isLogged);
-const [appTheme, setAppTheme] = useState(themeStore.getState().appTheme);
-useEffect(() => {
-
-    const unsubscribe = themeStore.subscribe(
-        (newState) => setAppTheme(newState.appTheme)
-    );
-
-    return () => unsubscribe();
-}, []);
 
 const Stack = createStackNavigator();
     return (
