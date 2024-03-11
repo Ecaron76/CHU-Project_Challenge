@@ -2,6 +2,19 @@ import { StyleSheet } from 'react-native';
 
 
 export default StyleSheet.create({
+    paragraph: {
+        textAlign: 'justify',
+        marginBottom: 16,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    title: {
+        fontSize: 17,
+        fontWeight: 'bold',
+        alignItems: 'center',
+        marginBottom: 8,
+        color: '#00B4EC',
+    },
     container: {
         flex: 1,
         // backgroundColor: theme.backgroundColor,
