@@ -30,11 +30,6 @@ export default function PrivacyPage() {
                 Cette politique de confidentialité peut être mise à jour. Les modifications seront publiées sur
                 cette page et prendront effet immédiatement.
             </Text>
-
-            <Text style={SettingsStyles.title}>Contact</Text>
-            <Text style={SettingsStyles.paragraph}>
-                En utilisant l'application, vous consentez à notre politique de confidentialité.
-            </Text>
         </ScrollView>
     );
 }
