@@ -1,10 +1,11 @@
-import {View, Button, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {View, Button, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Image} from 'react-native';
 import { StepsChallengeService } from '../../services/StepsChallengeService/StepsChallengeService';
 import { useIsFocused } from '@react-navigation/native';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, Suspense } from 'react';
 import Indicator from '../shared/Indicator';
 import Chart from '../shared/Chart';
 import { loginStore } from "../../store/loginStore";
+import Loader from '../Loader/Loader';
 
 
 export default function StatsPage() {
@@ -13,14 +14,23 @@ export default function StatsPage() {
     const [selectedOption, setSelectedOption] = useState('mois');
     const [allSteps, setAllSteps] = useState(0);
     const [stepsData, setStepsData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const isFocused = useIsFocused();
 
     useEffect(() => {
 
-        if(isFocused){ 
+        const getStepsFunction = async () => {
 
-            getSteps();
-        }
+            await getSteps();
+            setIsLoading(false);
+          } 
+      
+          if(isFocused){ 
+
+            setIsLoading(true);      
+            getStepsFunction();
+      
+          }
 
     }, [isFocused]);
 
@@ -40,63 +50,72 @@ export default function StatsPage() {
     };
 
     return (
-        <View style={{width: '100%', height: '100%', padding:10, alignItems:'center'}}>
-            <Text style={{fontSize:25, fontWeight: 'bold', textAlign:'center', marginBottom:20}}> Accomplissement du challenge</Text>
-            <View style={{gap:20, width:"100%"}}>
-                {allSteps ? <Indicator textIndicator="pas totaux" valueIndicator={allSteps}/> : null}
-                {stepsData.length > 0 ? <Indicator textIndicator="pas ce mois-ci" valueIndicator={stepsData[0][4]?.count}/> : null}
-                {stepsData.length > 0 ? <Indicator textIndicator="pas cette semaine" valueIndicator={stepsData[1][4]?.count} />: null}
-                {stepsData.length > 0 ? <Indicator textIndicator="pas aujourd'hui" valueIndicator={stepsData[2][4]?.count}/>: null}
-            </View>
-            <View style={{width:'70%', alignItems:'center', }}>
-                <View style={stylesStats.testa}>
-                    <TouchableOpacity
-                        style={[
-                            stylesStats.option,
-                            selectedOption === 'jours' && stylesStats.selectedOption,
-                        ]}
-                        onPress={() => handleOptionPress('jours')}
-                    >
-                        <Text style={[
-                            stylesStats.optionText,
-                            selectedOption === 'jours' && stylesStats.selectedOptionText,
-                        ]}>Jours</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[
-                            stylesStats.option,
-                            selectedOption === 'semaines' && stylesStats.selectedOption,
-                        ]}
-                        onPress={() => handleOptionPress('semaines')}
-                    >
-                        <Text style={[
-                            stylesStats.optionText,
-                            selectedOption === 'semaines' && stylesStats.selectedOptionText,
-                        ]}>Semaines</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={[
-                            stylesStats.option,
-                            selectedOption === 'mois' && stylesStats.selectedOption,
-                        ]}
-                        onPress={() => handleOptionPress('mois')}
-                    >
-                        <Text style={[
-                            stylesStats.optionText,
-                            selectedOption === 'mois' && stylesStats.selectedOptionText,
-                        ]}
+        <View>
+        {isLoading ? 
+        (
+            <Loader></Loader>
+        )
+        : 
+        (
+            <View style={{width: '100%', height: '100%', padding:10, alignItems:'center'}}>
+                <Text style={{fontSize:25, fontWeight: 'bold', textAlign:'center', marginBottom:20}}> Accomplissement du challenge</Text>
+                <View style={{gap:20, width:"100%"}}>
+                    {allSteps ? <Indicator textIndicator="pas totaux" valueIndicator={allSteps}/> : null}
+                    {stepsData.length > 0 ? <Indicator textIndicator="pas ce mois-ci" valueIndicator={stepsData[0][4]?.count}/> : null}
+                    {stepsData.length > 0 ? <Indicator textIndicator="pas cette semaine" valueIndicator={stepsData[1][4]?.count} />: null}
+                    {stepsData.length > 0 ? <Indicator textIndicator="pas aujourd'hui" valueIndicator={stepsData[2][4]?.count}/>: null}
+                </View>
+                <View style={{width:'70%', alignItems:'center', }}>
+                    <View style={stylesStats.testa}>
+                        <TouchableOpacity
+                            style={[
+                                stylesStats.option,
+                                selectedOption === 'jours' && stylesStats.selectedOption,
+                            ]}
+                            onPress={() => handleOptionPress('jours')}
                         >
-                        Mois
-                        </Text>
-                    </TouchableOpacity>
+                            <Text style={[
+                                stylesStats.optionText,
+                                selectedOption === 'jours' && stylesStats.selectedOptionText,
+                            ]}>Jours</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[
+                                stylesStats.option,
+                                selectedOption === 'semaines' && stylesStats.selectedOption,
+                            ]}
+                            onPress={() => handleOptionPress('semaines')}
+                        >
+                            <Text style={[
+                                stylesStats.optionText,
+                                selectedOption === 'semaines' && stylesStats.selectedOptionText,
+                            ]}>Semaines</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[
+                                stylesStats.option,
+                                selectedOption === 'mois' && stylesStats.selectedOption,
+                            ]}
+                            onPress={() => handleOptionPress('mois')}
+                        >
+                            <Text style={[
+                                stylesStats.optionText,
+                                selectedOption === 'mois' && stylesStats.selectedOptionText,
+                            ]}
+                            >
+                            Mois
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                
+        
+                <View style={{ width: '85%', height:'30%', alignSelf: 'center', }}>
+                    {/* Bien penser à mettre du conditional rendering car ca met trois plombes de charger les données. Il va falloir mettre un splash screen. */}
+                    { stepsData.length > 0 ? <Chart delay={selectedOption} stepsData={stepsData} /> : null}
                 </View>
             </View>
-            
-     
-            <View style={{ width: '85%', height:'30%', alignSelf: 'center', }}>
-                {/* Bien penser à mettre du conditional rendering car ca met trois plombes de charger les données. Il va falloir mettre un splash screen. */}
-                { stepsData.length > 0 ? <Chart delay={selectedOption} stepsData={stepsData} /> : null}
-            </View>
+        )}
         </View>
     );
 }
