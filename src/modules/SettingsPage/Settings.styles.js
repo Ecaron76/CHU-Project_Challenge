@@ -1,5 +1,4 @@
 import { StyleSheet } from 'react-native';
-import { themes, useTheme } from '../shared/ThemeContext';
 
 
 export default StyleSheet.create({

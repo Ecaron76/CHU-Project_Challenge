@@ -1,28 +1,26 @@
 import { View } from 'react-native';
 import SettingItem from './components/SettingItem';
 import SettingsStyles from './Settings.styles';
-import { useTheme } from '../shared/ThemeContext';
+import {themeStore} from "../../store/themeStore";
 
 export default function SettingsPage() {
-    const { theme } = useTheme();
+    const { setToggle } = themeStore();
 
     return (
-        <View style={{ ...SettingsStyles.container, backgroundColor: theme.backgroundColor }}>
-            {/*<SettingItem*/}
-            {/*    iconName="weather-night"*/}
-            {/*    text="Mode sombre"*/}
-            {/*    hasToggle*/}
-            {/*    onToggle={(value) => console.log('Theme:', value)}*/}
-            {/*/>*/}
+        <View style={{ ...SettingsStyles.container }}>
+            <SettingItem
+                iconName="weather-night"
+                text="Mode sombre"
+                hasToggle
+                onToggle={(value) => setToggle(value)}
+            />
             <SettingItem iconName="lock" text="Confidentialité" isPrivacy />
             <SettingItem
                 iconName="exit-to-app"
                 text="Déconnexion"
                 isLogout
                 style={{
-                    ...SettingsStyles.settingItem,
-                    backgroundColor: theme.backgroundColor,
-                    color: theme.textColor,
+                    ...SettingsStyles.settingItem
                 }}
             />
         </View>

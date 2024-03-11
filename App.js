@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import Tabs from "./src/modules/Navigation/components/Tabs";
@@ -7,19 +7,25 @@ import SettingsPage from "./src/modules/SettingsPage/SettingsPage";
 import NotificationsPage from "./src/modules/NotificationsPage/NotificationsPage";
 import { createStackNavigator } from '@react-navigation/stack';
 import { loginStore } from './src/store/loginStore';
-import { ThemeProvider } from './src/modules/shared/ThemeContext';
 import PrivacyPage from "./src/modules/SettingsPage/components/PrivacyPage";
-
-const Stack = createStackNavigator();
+import { themeStore } from "./src/store/themeStore";
 
 export default function App() {
 
 const isLogged = loginStore((state) => state.isLogged);
 console.log("isLogged = " + isLogged);
+const [appTheme, setAppTheme] = useState(themeStore.getState().appTheme);
+useEffect(() => {
+
+    const unsubscribe = themeStore.subscribe(
+        (newState) => setAppTheme(newState.appTheme)
+    );
+
+    return () => unsubscribe();
+}, []);
 
 const Stack = createStackNavigator();
     return (
-        <ThemeProvider>
             <NavigationContainer>
                 <StatusBar barStyle="dark-content" />
                 <Stack.Navigator
@@ -51,6 +57,5 @@ const Stack = createStackNavigator();
                     )}
                 </Stack.Navigator>
             </NavigationContainer>
-        </ThemeProvider>
     );
 }
