@@ -33,11 +33,6 @@ export default function StatsPage() {
         const stepsArray = await StepsChallengeService.getStepsData(challengeId);
         setStepsData(stepsArray);
 
-        console.log(allSteps)
-        
-        console.log(stepsData.length)
-        console.log(stepsData)
-
     };
 
     const handleOptionPress = (option) => {

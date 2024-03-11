@@ -6,6 +6,8 @@ import { loginStore } from "../../store/loginStore";
 import Indicator from '../shared/Indicator'
 import RingProgress from './components/RingProgresss'
 // import useHealthData from '../../hooks/useHealthData';
+import { useIsFocused } from '@react-navigation/native';
+
 
 /**
  * Page qui affiche les pas de l'utilisateur.
@@ -23,16 +25,26 @@ const ActivityPage = () => {
   const getStepsTimerValue = 1000; // en ms
   const saveStepsTimerValue = 60000; // en ms  
   const {chuId, password, isLogged, setChuId, setPassword, setIsLogged, pkId, setPkId, challengeId, setChallengeId} = loginStore();
+  
+  const isFocused = useIsFocused();
 
   useEffect(() => {
-    // Si premier chargement de la page
-    if (!isFirstLoadingRef.current) {
-      saveData();
-    }
-    loadData();
-      
+    
+    const getSteps = async () => {
+      // Si premier chargement de la page
+      if (!isFirstLoadingRef.current) {
+        await saveData();
+      }
+      await loadData();
 
-  }, [dailySteps]);
+    } 
+
+    if(isFocused){ 
+
+      getSteps();
+
+    }
+  }, [isFocused, dailySteps]);
   
 
   // Méthode qui appelle getPedometerData toutes les 10 secondes et vérifie si les nombres de pas à évolué. 
@@ -43,6 +55,7 @@ const ActivityPage = () => {
 
       // On récupère les pas.
       const stepsNumber = await getPedometerData();
+      
       setDailySteps(stepsNumber);
 
     }
@@ -104,24 +117,14 @@ const ActivityPage = () => {
     await PedometerService.saveSteps(dailySteps, chuId, pkId, challengeId);
   }
 
-  // const [date, setDate] = useState(new Date());
-  // const { steps, flights, distance } = useHealthData(date);
-
-  // const changeDate = (numDays) => {
-  //   const currentDate = new Date(date); // Create a copy of the current date
-  //   // Update the date by adding/subtracting the number of days
-  //   currentDate.setDate(currentDate.getDate() + numDays);
-
-  //   setDate(currentDate); // Update the state variable
-  // };
-
   return (
     <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
       <View style={stylesHome.podometerContainer}>
         <RingProgress progress={dailySteps/10000} />
       </View>
       <View style={stylesHome.indicatorsContainer}>
-        <Indicator iconIndicator={require('../../../assets/images/home/pas.png')} textIndicator="pas aujourd'hui" valueIndicator={dailySteps} iconLevel={require('../../../assets/images/flame/rabbit-3.png')} />
+        <Indicator iconIndicator={require('../../../assets/images/home/pas.png')} textIndicator="pas aujourd'hui" 
+        valueIndicator={dailySteps} haveIcon={true} />
         <Indicator iconIndicator={require('../../../assets/images/home/path-road_black.png')} textIndicator='Km parcourus' valueIndicator={(((dailySteps/100)*64)/1000).toFixed(2)} />
       </View>
     </View>
