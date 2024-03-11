@@ -18,6 +18,7 @@ export default StyleSheet.create({
     container: {
         flex: 1,
         // backgroundColor: theme.backgroundColor,
+        borderBottomColor: '#ccc',
         padding: 16,
     },
     settingItem: {
@@ -26,10 +27,11 @@ export default StyleSheet.create({
         paddingVertical: 16,
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
-        // backgroundColor: theme.theme === 'dark' ? 'black' : 'white',
+        backgroundColor: 'white',
     },
     icon: {
-        marginRight: 16,
+        marginRight: 20,
+        paddingLeft: 10,
     },
     text: {
         flex: 1,

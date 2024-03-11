@@ -30,10 +30,10 @@ const SettingItem = ({ iconName, text, hasToggle, onToggle, isLogout, isPrivacy 
     const handlePress = () => {
         if (!hasToggle) {
             if (isLogout) {
-                Alert.alert('Logout', 'Are you sure you want to logout?', [
-                    { text: 'Cancel', style: 'cancel' },
+                Alert.alert('Déconnexion', 'Voulez-vous vous déconnecter ?', [
+                    { text: 'Annuler', style: 'cancel' },
                     {
-                        text: 'Logout',
+                        text: 'Se déconnecter',
                         onPress: async () => {
                             setIsLogged(false);
                         },

@@ -8,12 +8,12 @@ export default function SettingsPage() {
 
     return (
         <View style={{ ...SettingsStyles.container }}>
-            <SettingItem
-                iconName="weather-night"
-                text="Mode sombre"
-                hasToggle
-                onToggle={(value) => setToggle(value)}
-            />
+            {/*<SettingItem*/}
+            {/*    iconName="weather-night"*/}
+            {/*    text="Mode sombre"*/}
+            {/*    hasToggle*/}
+            {/*    onToggle={(value) => setToggle(value)}*/}
+            {/*/>*/}
             <SettingItem iconName="lock" text="Confidentialité" isPrivacy />
             <SettingItem
                 iconName="exit-to-app"
