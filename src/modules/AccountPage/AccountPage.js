@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { StepsService } from '../../services/StepsService/StepsService.js';
 import { loginStore } from "../../store/loginStore";
 import { useIsFocused } from '@react-navigation/native';
+import useAvatarStore from "../../store/avatarStore";
+import defaultAvatarPath from "../../../assets/images/userIcons/chat.png";
 
 
 export default function AccountPage() {
@@ -13,6 +15,8 @@ export default function AccountPage() {
     const [displayText, setDisplayText] = useState('Ce mois-ci');
     const [stepsValue, setStepsValue] = useState()
     const isFocused = useIsFocused();
+    const { selectedAvatar } = useAvatarStore();
+    const defaultAvatarUrl = '../../../assets/images/home/chat.png';
 
     useEffect(() => {
         if(isFocused){ 
@@ -67,7 +71,7 @@ export default function AccountPage() {
         <View style={{ width: '100%', height:'100%', alignItems: 'center',backgroundColor: 'white', paddingTop:10}}>
             <View style={stylesAccount.avatar}>
                 <Image
-                    source={require('../../../assets/images/home/chat.png')}
+                    source={selectedAvatar || defaultAvatarPath}
                     style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems:'flex-end', position:'absolute' }}
                 />
             </View>
@@ -204,9 +208,7 @@ const stylesAccount = StyleSheet.create({
       selectedOption: {
         backgroundColor: '#00B4EC',
         borderRadius: 15,
-
         textAlign: 'center',
-        borderRadius: 15,
         
       },
       optionText: {
@@ -215,7 +217,7 @@ const stylesAccount = StyleSheet.create({
         color: 'black', 
       },
       selectedOptionText: {
-        color: 'white', // Couleur du texte lorsque l'option est sélectionnée
+        color: 'white',
       },
 
     badgeContainer:{

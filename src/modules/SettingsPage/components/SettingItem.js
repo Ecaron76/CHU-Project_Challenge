@@ -49,7 +49,7 @@ const SettingItem = ({ iconName, text, hasToggle, onToggle, isLogout, isPrivacy 
 
     return (
         <Pressable onPress={handlePress}>
-            <View style={{ ...SettingsStyles.settingItem, backgroundColor: appTheme.backgroundColor }}>
+            <View style={{ ...SettingsStyles.settingItem}}>
             <MaterialCommunityIcons name={iconName} size={24} color="black" style={SettingsStyles.icon} />
                 <Text style={SettingsStyles.text}>{text}</Text>
                 {hasToggle && (
