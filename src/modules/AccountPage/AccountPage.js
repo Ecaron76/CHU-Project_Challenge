@@ -5,6 +5,7 @@ import { StepsService } from '../../services/StepsService/StepsService.js';
 import { loginStore } from "../../store/loginStore";
 import { useIsFocused } from '@react-navigation/native';
 import Loader from '../Loader/Loader';
+import Badge from './components/Badge';
 
 export default function AccountPage() {
     const [arrayOfStepsDatas, setArrayOfStepsDatas] = useState([]);
@@ -14,6 +15,46 @@ export default function AccountPage() {
     const [stepsValue, setStepsValue] = useState()
     const isFocused = useIsFocused();
     const [isLoading, setIsLoading] = useState(true);
+    const [isBadgeVisible, setBadgeVisible] = useState(false);
+    const [badgeTitle, setBadgeTitle] = useState("")
+    const [stepAchieve, setStepAchieve] = useState("")
+  const openBadge = (level) => {
+    switch (level) {
+        case "turtle":
+            setBadgeTitle("Tortue")
+            setStepAchieve("100 000")
+            setBadgeVisible(true);
+            break;
+        
+        case "rabbit":
+            setBadgeTitle("Lièvre")
+            setStepAchieve("250 000")
+            setBadgeVisible(true);
+            break;
+        
+        case "leopard":
+            setBadgeTitle("Léopard")
+            setStepAchieve("500 000")
+            setBadgeVisible(true);
+
+            break;
+        
+        case "rocket":
+            setBadgeTitle("Fusée")
+            setStepAchieve("1 000 000")
+            setBadgeVisible(true);
+
+            break;
+    
+        default:
+            break;
+    }
+    
+  };
+
+  const closeBage = () => {
+    setBadgeVisible(false);
+  };
 
 
     useEffect(() => {
@@ -69,7 +110,7 @@ export default function AccountPage() {
     }, [selectedOption, arrayOfStepsDatas]);
 
     return (
-        // <ScrollView style={{backgroundColor:'red', flex:1 }} >
+        
         // {isLoading ? 
         // (
         //     <Loader></Loader>
@@ -77,6 +118,7 @@ export default function AccountPage() {
         // : 
         // (
             <ScrollView style={{flex:1, padding:10,}} contentContainerStyle={{alignItems:'center'}}>
+                
                 <View style={stylesAccount.avatar}>
                     <Image
                         source={require('../../../assets/images/home/chat.png')}
@@ -84,37 +126,39 @@ export default function AccountPage() {
                     />
                 </View>
                 
-
                 <View style={{width:'100%', alignItems:'center' }}>
                     <Text style={{fontSize: 45, fontWeight:'bold'}}>{stepsValue} </Text>
                     <Text>{displayText}</Text>
                 </View>
 
                 <View style={stylesAccount.badgeContainer}>
+                    <TouchableOpacity style={{height: '98%', width:'25%'}} onPress={() => openBadge("turtle")}
+>
                         <Image
                             source={require('../../../assets/images/badges/badge-turtle.png')}
-                            style={{height: '98%', width:'15.5%', resizeMode:'contain'}}
+                            style={{height: '98%', width:'100%', resizeMode:'contain'}}
                         />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{height: '98%', width:'25%'}} onPress={() => openBadge("rabbit")}>
                         <Image
                             source={require('../../../assets/images/badges/badge-rabbit.png')}
-                            style={{ height: '98%', width:'15.5%', resizeMode:'contain'}}
+                            style={{ height: '98%', width:'100%', resizeMode:'contain'}}
                         />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{height: '98%', width:'25%'}} onPress={() => openBadge("leopard")}>
                         <Image
                             source={require('../../../assets/images/badges/badge-leopard.png')}
-                            style={{height: '98%', width:'15.5%', resizeMode:'contain'}}
+                            style={{height: '98%', width:'100%', resizeMode:'contain'}}
                         />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={{height: '98%', width:'25%'}} onPress={() => openBadge("rocket")}>
                         <Image
                             source={require('../../../assets/images/badges/badge-rocket.png')}
-                            style={{height: '98%', width:'15.5%', resizeMode:'contain'}}
+                            style={{height: '98%', width:'100%', resizeMode:'contain'}}
                         />
-                        <Image
-                            source={require('../../../assets/images/badges/badge-leopard.png')}
-                            style={{height: '98%', width:'15.5%', resizeMode:'contain', opacity:0.3}}
-                        />
-                        <Image
-                            source={require('../../../assets/images/badges/badge-rocket.png')}
-                            style={{height: '98%',width:'15.5%', resizeMode:'contain', opacity:0.3 }}
-                        />
+                    </TouchableOpacity>
+                    <Badge isVisible={isBadgeVisible} onClose={closeBage} badgeTitle={badgeTitle} stepAchieve={stepAchieve
+                    } />
                 </View>
 
                 <View style={{width:'100%', alignItems:'center', justifyContent:'center', marginTop:20, marginBottom:20 }}>
@@ -163,12 +207,10 @@ export default function AccountPage() {
                     { arrayOfStepsDatas.length > 0 ? <Chart delay={selectedOption} stepsData={arrayOfStepsDatas} /> : null}
                     </View>
                 </View>
+
             </ScrollView>
 
             
-        /* )}
-            
-        </ScrollView> */
     );
 }
 
@@ -188,7 +230,6 @@ const stylesAccount = StyleSheet.create({
         elevation: 10,
     },
     testa:{
-        
         marginBottom:13,
         paddingRight:10,
         paddingLeft:7,
@@ -232,15 +273,14 @@ const stylesAccount = StyleSheet.create({
         color: 'black', 
       },
       selectedOptionText: {
-        color: 'white', // Couleur du texte lorsque l'option est sélectionnée
+        color: 'white', 
       },
 
     badgeContainer:{
-        width:'100%', 
+        width:'90%', 
         height:60, 
         borderRadius:30, 
         flexDirection:'row',
-        justifyContent:'space-between', 
         paddingHorizontal: 10, 
         marginTop:10,
         backgroundColor: 'white',
