@@ -51,9 +51,5 @@ export const LoginService = {
         catch (error){
             console.log("An error occured " + error);
         }
-    }
-
-
-
-
+    },
   } 

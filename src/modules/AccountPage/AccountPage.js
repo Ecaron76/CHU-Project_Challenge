@@ -6,6 +6,9 @@ import { loginStore } from "../../store/loginStore";
 import { useIsFocused } from '@react-navigation/native';
 import Loader from '../Loader/Loader';
 import Badge from './components/Badge';
+import useAvatarStore from "../../store/avatarStore";
+import defaultAvatarPath from "../../../assets/images/userIcons/chat.png";
+
 
 export default function AccountPage() {
     const [arrayOfStepsDatas, setArrayOfStepsDatas] = useState([]);
@@ -25,37 +28,39 @@ export default function AccountPage() {
             setStepAchieve("100 000")
             setBadgeVisible(true);
             break;
-        
+
         case "rabbit":
             setBadgeTitle("Lièvre")
             setStepAchieve("250 000")
             setBadgeVisible(true);
             break;
-        
+
         case "leopard":
             setBadgeTitle("Léopard")
             setStepAchieve("500 000")
             setBadgeVisible(true);
 
             break;
-        
+
         case "rocket":
             setBadgeTitle("Fusée")
             setStepAchieve("1 000 000")
             setBadgeVisible(true);
 
             break;
-    
+
         default:
             break;
     }
-    
+
   };
 
   const closeBage = () => {
     setBadgeVisible(false);
   };
 
+    const { selectedAvatar } = useAvatarStore();
+    const defaultAvatarUrl = '../../../assets/images/home/chat.png';
 
     useEffect(() => {
         if(isFocused){ 
@@ -111,22 +116,22 @@ export default function AccountPage() {
 
     return (
         <>
-            {isLoading ? 
+            {isLoading ?
             (
                 <Loader></Loader>
             )
-            : 
+            :
             (
 
                 <ScrollView style={{flex:1, padding:10,}} contentContainerStyle={{alignItems:'center'}}>
-                    
+
                     <View style={stylesAccount.avatar}>
                         <Image
                             source={require('../../../assets/images/home/chat.png')}
                             style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems:'flex-end', position:'absolute' }}
                         />
                     </View>
-                    
+
                     <View style={{width:'100%', alignItems:'center' }}>
                         <Text style={{fontSize: 45, fontWeight:'bold'}}>{stepsValue} </Text>
                         <Text>{displayText}</Text>
@@ -210,7 +215,7 @@ export default function AccountPage() {
 
                 </ScrollView>
             )}
-        </> 
+        </>
     );
 }
 
@@ -218,8 +223,8 @@ const stylesAccount = StyleSheet.create({
     avatar:{
         backgroundColor:'white', 
         borderRadius:200,
-        width:'70%', 
-        height:250, 
+        width:'70%',
+        height:250,
         shadowColor: "black",
         shadowOffset: {
             width: 0,
@@ -273,11 +278,11 @@ const stylesAccount = StyleSheet.create({
         color: 'black', 
       },
       selectedOptionText: {
-        color: 'white', 
+        color: 'white', // Couleur du texte lorsque l'option est sélectionnée
       },
 
     badgeContainer:{
-        width:'90%', 
+        width:'90%',
         height:60, 
         borderRadius:30, 
         flexDirection:'row',
