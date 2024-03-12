@@ -23,7 +23,6 @@ export default function StatsPage() {
 
             await getSteps();
             setIsLoading(false);
-            console.log(stepsData)
           } 
       
           if(isFocused){ 
@@ -31,6 +30,8 @@ export default function StatsPage() {
             setIsLoading(true);      
             getStepsFunction();
       
+
+            
           }
 
     }, [isFocused]);
@@ -51,71 +52,74 @@ export default function StatsPage() {
     };
 
     return (
-        <ScrollView style={{height:'100%', padding:5, alignContent:'center'}}>
-        {isLoading ? 
-        (
-            <Loader></Loader>
-        )
-        : 
-        (
-            <View style={{width: '100%', height: '50%', padding:10, marginBottom:40, alignItems:'center'}}>
-                <Text style={{fontSize:25, fontWeight: 'bold', textAlign:'center', marginBottom:20}}> Accomplissement du challenge</Text>
-                <View style={{gap:20, width:"100%"}}>
-                    {allSteps ? <Indicator textIndicator="pas totaux" valueIndicator={allSteps}/> : null}
-                    {stepsData.length > 0 ? <Indicator textIndicator="pas ce mois-ci" valueIndicator={stepsData[0][4]?.count}/> : null}
-                    {stepsData.length > 0 ? <Indicator textIndicator="pas cette semaine" valueIndicator={stepsData[1][4]?.count} />: null}
-                    {stepsData.length > 0 ? <Indicator textIndicator="pas aujourd'hui" valueIndicator={50}/>: null}
-                </View>
-                <View style={{width:'100%', alignItems:'center', justifyContent:'center', height:'100%' }}>
-                    <View style={stylesStats.testa}>
-                        <TouchableOpacity
-                            style={[
-                                stylesStats.option,
-                                selectedOption === 'jours' && stylesStats.selectedOption,
-                            ]}
-                            onPress={() => handleOptionPress('jours')}
-                        >
-                            <Text style={[
-                                stylesStats.optionText,
-                                selectedOption === 'jours' && stylesStats.selectedOptionText,
-                            ]}>Jours</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[
-                                stylesStats.option,
-                                selectedOption === 'semaines' && stylesStats.selectedOption,
-                            ]}
-                            onPress={() => handleOptionPress('semaines')}
-                        >
-                            <Text style={[
-                                stylesStats.optionText,
-                                selectedOption === 'semaines' && stylesStats.selectedOptionText,
-                            ]}>Semaines</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[
-                                stylesStats.option,
-                                selectedOption === 'mois' && stylesStats.selectedOption,
-                            ]}
-                            onPress={() => handleOptionPress('mois')}
-                        >
-                            <Text style={[
-                                stylesStats.optionText,
-                                selectedOption === 'mois' && stylesStats.selectedOptionText,
-                            ]}
-                            >
-                            Mois
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                    <View style={{width:"100%", justifyContent:'center',}}>
-                    { stepsData.length > 0 ? <Chart delay={selectedOption} stepsData={stepsData} /> : null}
-                    </View>
-                </View>
-                    {/* Bien penser à mettre du conditional rendering car ca met trois plombes de charger les données. Il va falloir mettre un splash screen. */} 
-            </View>
-        )}
-        </ScrollView>
+        <>
+            {isLoading ? 
+                (
+                    <Loader></Loader>
+                )
+                : 
+                (
+                    <ScrollView style={{height:'100%', padding:5, alignContent:'center'}}>
+                        <View style={{width: '100%', height: '50%', padding:10, marginBottom:40, alignItems:'center'}}>
+                            <Text style={{fontSize:25, fontWeight: 'bold', textAlign:'center', marginBottom:20}}> Accomplissement du challenge</Text>
+                            <View style={{gap:20, width:"100%"}}>
+                                {allSteps ? <Indicator textIndicator="pas totaux" valueIndicator={allSteps}/> : null}
+                                {stepsData.length > 0 ? <Indicator textIndicator="pas ce mois-ci" valueIndicator={stepsData[0][4]?.count}/> : null}
+                                {stepsData.length > 0 ? <Indicator textIndicator="pas cette semaine" valueIndicator={stepsData[1][4]?.count} />: null}
+                                {stepsData.length > 0 ? <Indicator textIndicator="pas aujourd'hui" valueIndicator={stepsData[2][4]?.count}/>: null}
+                            </View>
+                            <View style={{width:'100%', alignItems:'center', justifyContent:'center', height:'100%' }}>
+                                <View style={stylesStats.testa}>
+                                    <TouchableOpacity
+                                        style={[
+                                            stylesStats.option,
+                                            selectedOption === 'jours' && stylesStats.selectedOption,
+                                        ]}
+                                        onPress={() => handleOptionPress('jours')}
+                                    >
+                                        <Text style={[
+                                            stylesStats.optionText,
+                                            selectedOption === 'jours' && stylesStats.selectedOptionText,
+                                        ]}>Jours</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={[
+                                            stylesStats.option,
+                                            selectedOption === 'semaines' && stylesStats.selectedOption,
+                                        ]}
+                                        onPress={() => handleOptionPress('semaines')}
+                                    >
+                                        <Text style={[
+                                            stylesStats.optionText,
+                                            selectedOption === 'semaines' && stylesStats.selectedOptionText,
+                                        ]}>Semaines</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                        style={[
+                                            stylesStats.option,
+                                            selectedOption === 'mois' && stylesStats.selectedOption,
+                                        ]}
+                                        onPress={() => handleOptionPress('mois')}
+                                    >
+                                        <Text style={[
+                                            stylesStats.optionText,
+                                            selectedOption === 'mois' && stylesStats.selectedOptionText,
+                                        ]}
+                                        >
+                                        Mois
+                                        </Text>
+                                    </TouchableOpacity>
+                                </View>
+                                <View style={{width:"100%", justifyContent:'center',}}>
+                                { stepsData.length > 0 ? <Chart delay={selectedOption} stepsData={stepsData} /> : null}
+                                </View>
+                            </View>
+                                {/* Bien penser à mettre du conditional rendering car ca met trois plombes de charger les données. Il va falloir mettre un splash screen. */} 
+                        </View>
+                    </ScrollView>
+                )
+            }
+        </> 
     );
 }
 const stylesStats = StyleSheet.create({

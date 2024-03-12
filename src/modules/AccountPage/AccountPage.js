@@ -110,107 +110,107 @@ export default function AccountPage() {
     }, [selectedOption, arrayOfStepsDatas]);
 
     return (
-        
-        // {isLoading ? 
-        // (
-        //     <Loader></Loader>
-        // )
-        // : 
-        // (
-            <ScrollView style={{flex:1, padding:10,}} contentContainerStyle={{alignItems:'center'}}>
-                
-                <View style={stylesAccount.avatar}>
-                    <Image
-                        source={require('../../../assets/images/home/chat.png')}
-                        style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems:'flex-end', position:'absolute' }}
-                    />
-                </View>
-                
-                <View style={{width:'100%', alignItems:'center' }}>
-                    <Text style={{fontSize: 45, fontWeight:'bold'}}>{stepsValue} </Text>
-                    <Text>{displayText}</Text>
-                </View>
+        <>
+            {isLoading ? 
+            (
+                <Loader></Loader>
+            )
+            : 
+            (
 
-                <View style={stylesAccount.badgeContainer}>
-                    <TouchableOpacity style={{height: '98%', width:'25%'}} onPress={() => openBadge("turtle")}
->
+                <ScrollView style={{flex:1, padding:10,}} contentContainerStyle={{alignItems:'center'}}>
+                    
+                    <View style={stylesAccount.avatar}>
                         <Image
-                            source={require('../../../assets/images/badges/badge-turtle.png')}
-                            style={{height: '98%', width:'100%', resizeMode:'contain'}}
+                            source={require('../../../assets/images/home/chat.png')}
+                            style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems:'flex-end', position:'absolute' }}
                         />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{height: '98%', width:'25%'}} onPress={() => openBadge("rabbit")}>
-                        <Image
-                            source={require('../../../assets/images/badges/badge-rabbit.png')}
-                            style={{ height: '98%', width:'100%', resizeMode:'contain'}}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{height: '98%', width:'25%'}} onPress={() => openBadge("leopard")}>
-                        <Image
-                            source={require('../../../assets/images/badges/badge-leopard.png')}
-                            style={{height: '98%', width:'100%', resizeMode:'contain'}}
-                        />
-                    </TouchableOpacity>
-                    <TouchableOpacity style={{height: '98%', width:'25%'}} onPress={() => openBadge("rocket")}>
-                        <Image
-                            source={require('../../../assets/images/badges/badge-rocket.png')}
-                            style={{height: '98%', width:'100%', resizeMode:'contain'}}
-                        />
-                    </TouchableOpacity>
-                    <Badge isVisible={isBadgeVisible} onClose={closeBage} badgeTitle={badgeTitle} stepAchieve={stepAchieve
-                    } />
-                </View>
+                    </View>
+                    
+                    <View style={{width:'100%', alignItems:'center' }}>
+                        <Text style={{fontSize: 45, fontWeight:'bold'}}>{stepsValue} </Text>
+                        <Text>{displayText}</Text>
+                    </View>
 
-                <View style={{width:'100%', alignItems:'center', justifyContent:'center', marginTop:20, marginBottom:20 }}>
-                    <View style={stylesAccount.testa}>
-                        <TouchableOpacity
-                            style={[
-                                stylesAccount.option,
-                                selectedOption === 'jours' && stylesAccount.selectedOption,
-                            ]}
-                            onPress={() => handleOptionPress('jours')}
-                        >
-                            <Text style={[
-                                stylesAccount.optionText,
-                                selectedOption === 'jours' && stylesAccount.selectedOptionText,
-                            ]}>Jours</Text>
+                    <View style={stylesAccount.badgeContainer}>
+                        <TouchableOpacity style={{height: '98%', width:'25%'}} onPress={() => openBadge("turtle")}>
+                            <Image
+                                source={require('../../../assets/images/badges/badge-turtle.png')}
+                                style={{height: '98%', width:'100%', resizeMode:'contain'}}
+                            />
                         </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[
-                                stylesAccount.option,
-                                selectedOption === 'semaines' && stylesAccount.selectedOption,
-                            ]}
-                            onPress={() => handleOptionPress('semaines')}
-                        >
-                            <Text style={[
-                                stylesAccount.optionText,
-                                selectedOption === 'semaines' && stylesAccount.selectedOptionText,
-                            ]}>Semaines</Text>
+                        <TouchableOpacity style={{height: '98%', width:'25%'}} onPress={() => openBadge("rabbit")}>
+                            <Image
+                                source={require('../../../assets/images/badges/badge-rabbit.png')}
+                                style={{ height: '98%', width:'100%', resizeMode:'contain'}}
+                            />
                         </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[
-                                stylesAccount.option,
-                                selectedOption === 'mois' && stylesAccount.selectedOption,
-                            ]}
-                            onPress={() => handleOptionPress('mois')}
-                        >
-                            <Text style={[
-                                stylesAccount.optionText,
-                                selectedOption === 'mois' && stylesAccount.selectedOptionText,
-                            ]}
+                        <TouchableOpacity style={{height: '98%', width:'25%'}} onPress={() => openBadge("leopard")}>
+                            <Image
+                                source={require('../../../assets/images/badges/badge-leopard.png')}
+                                style={{height: '98%', width:'100%', resizeMode:'contain'}}
+                            />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={{height: '98%', width:'25%'}} onPress={() => openBadge("rocket")}>
+                            <Image
+                                source={require('../../../assets/images/badges/badge-rocket.png')}
+                                style={{height: '98%', width:'100%', resizeMode:'contain'}}
+                            />
+                        </TouchableOpacity>
+                        <Badge isVisible={isBadgeVisible} onClose={closeBage} badgeTitle={badgeTitle} stepAchieve={stepAchieve
+                        } />
+                    </View>
+
+                    <View style={{width:'100%', alignItems:'center', justifyContent:'center', marginTop:20, marginBottom:20 }}>
+                        <View style={stylesAccount.testa}>
+                            <TouchableOpacity
+                                style={[
+                                    stylesAccount.option,
+                                    selectedOption === 'jours' && stylesAccount.selectedOption,
+                                ]}
+                                onPress={() => handleOptionPress('jours')}
                             >
-                            Mois
-                            </Text>
-                        </TouchableOpacity>
+                                <Text style={[
+                                    stylesAccount.optionText,
+                                    selectedOption === 'jours' && stylesAccount.selectedOptionText,
+                                ]}>Jours</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[
+                                    stylesAccount.option,
+                                    selectedOption === 'semaines' && stylesAccount.selectedOption,
+                                ]}
+                                onPress={() => handleOptionPress('semaines')}
+                            >
+                                <Text style={[
+                                    stylesAccount.optionText,
+                                    selectedOption === 'semaines' && stylesAccount.selectedOptionText,
+                                ]}>Semaines</Text>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[
+                                    stylesAccount.option,
+                                    selectedOption === 'mois' && stylesAccount.selectedOption,
+                                ]}
+                                onPress={() => handleOptionPress('mois')}
+                            >
+                                <Text style={[
+                                    stylesAccount.optionText,
+                                    selectedOption === 'mois' && stylesAccount.selectedOptionText,
+                                ]}
+                                >
+                                Mois
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                        <View style={{width:'100%'}}>
+                        { arrayOfStepsDatas.length > 0 ? <Chart delay={selectedOption} stepsData={arrayOfStepsDatas} /> : null}
+                        </View>
                     </View>
-                    <View style={{width:'100%'}}>
-                    { arrayOfStepsDatas.length > 0 ? <Chart delay={selectedOption} stepsData={arrayOfStepsDatas} /> : null}
-                    </View>
-                </View>
 
-            </ScrollView>
-
-            
+                </ScrollView>
+            )}
+        </> 
     );
 }
 
