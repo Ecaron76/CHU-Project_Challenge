@@ -10,6 +10,11 @@ export const LoginService = {
             // On récup la primary key associé à l'ID du user.
             const userInfos = await this.getUserId(chuUserId);
 
+            //Si l'identifiant du user n'existe pas.
+            if (userInfos.length===0){
+                return false;
+            }
+
             const userId = userInfos[0].id;
 
             let { data: challengeInfos, challengeError } = await supabase

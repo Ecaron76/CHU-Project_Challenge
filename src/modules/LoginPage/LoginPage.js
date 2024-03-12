@@ -92,16 +92,22 @@ export default function LoginPage() {
                     initialValues={{ id: "", password: "" }}
                     onSubmit={ async (values) => {
 
+                        console.log(values);
+
                         // Récupère tous les challenges auxquels le user est inscrit.
                         const challengeInfosByUserId = await LoginService.getChallengeDataByUserId(values.id, values.password);
 
-                        // Si pas de challenge pour le user 
-                        if(challengeInfosByUserId.length == 0) {
+                        // Si le user n'existe pas.
+                        if(challengeInfosByUserId === false) {
+                            setTriedToLogOnce(true);
+                            setEnteredFalsePassword(true);
+                        }
+                        // Si le user existe mais n'a pas de challenge à son nom.
+                        else if(challengeInfosByUserId.length === 0) {
                             setNoChallengeForUser(true);
                         }
                         // Si un ou plusieurs challenges pour le user
                         else {
-
                             // On enregistre les identifiant du User dans le store.
                             setPkId(challengeInfosByUserId[0].user.id)
                             setChuId(values.id);
@@ -123,11 +129,11 @@ export default function LoginPage() {
                             }
                             else {
                                 setEnteredFalsePassword(false); 
+                                console.log("test");
 
                                 //vérifie si les dates du challenge sont ouvertes pour la connexion.
                                 setisChallengeOpen(checkIfChallengeOpen(activeChallengeInfos));
                                 
-                                // TODO Gérer enrolment date
                             }
                         }
                     }}
