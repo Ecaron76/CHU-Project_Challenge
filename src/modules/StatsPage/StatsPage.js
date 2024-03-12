@@ -1,4 +1,4 @@
-import {View, Button, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Image} from 'react-native';
+import {View, Button, Text, StyleSheet, TouchableOpacity, ActivityIndicator, Image, ScrollView} from 'react-native';
 import { StepsChallengeService } from '../../services/StepsChallengeService/StepsChallengeService';
 import { useIsFocused } from '@react-navigation/native';
 import { useEffect, useState, useMemo, Suspense } from 'react';
@@ -23,6 +23,7 @@ export default function StatsPage() {
 
             await getSteps();
             setIsLoading(false);
+            console.log(stepsData)
           } 
       
           if(isFocused){ 
@@ -50,22 +51,22 @@ export default function StatsPage() {
     };
 
     return (
-        <View>
+        <ScrollView style={{height:'100%', padding:5, alignContent:'center'}}>
         {isLoading ? 
         (
             <Loader></Loader>
         )
         : 
         (
-            <View style={{width: '100%', height: '100%', padding:10, alignItems:'center'}}>
+            <View style={{width: '100%', height: '50%', padding:10, marginBottom:40, alignItems:'center'}}>
                 <Text style={{fontSize:25, fontWeight: 'bold', textAlign:'center', marginBottom:20}}> Accomplissement du challenge</Text>
                 <View style={{gap:20, width:"100%"}}>
                     {allSteps ? <Indicator textIndicator="pas totaux" valueIndicator={allSteps}/> : null}
                     {stepsData.length > 0 ? <Indicator textIndicator="pas ce mois-ci" valueIndicator={stepsData[0][4]?.count}/> : null}
                     {stepsData.length > 0 ? <Indicator textIndicator="pas cette semaine" valueIndicator={stepsData[1][4]?.count} />: null}
-                    {stepsData.length > 0 ? <Indicator textIndicator="pas aujourd'hui" valueIndicator={stepsData[2][4]?.count}/>: null}
+                    {stepsData.length > 0 ? <Indicator textIndicator="pas aujourd'hui" valueIndicator={50}/>: null}
                 </View>
-                <View style={{width:'70%', alignItems:'center', }}>
+                <View style={{width:'100%', alignItems:'center', justifyContent:'center', height:'100%' }}>
                     <View style={stylesStats.testa}>
                         <TouchableOpacity
                             style={[
@@ -107,16 +108,14 @@ export default function StatsPage() {
                             </Text>
                         </TouchableOpacity>
                     </View>
-                </View>
-                
-        
-                <View style={{ width: '85%', height:'30%', alignSelf: 'center', }}>
-                    {/* Bien penser à mettre du conditional rendering car ca met trois plombes de charger les données. Il va falloir mettre un splash screen. */}
+                    <View style={{width:"100%", justifyContent:'center',}}>
                     { stepsData.length > 0 ? <Chart delay={selectedOption} stepsData={stepsData} /> : null}
+                    </View>
                 </View>
+                    {/* Bien penser à mettre du conditional rendering car ca met trois plombes de charger les données. Il va falloir mettre un splash screen. */} 
             </View>
         )}
-        </View>
+        </ScrollView>
     );
 }
 const stylesStats = StyleSheet.create({
@@ -127,7 +126,7 @@ const stylesStats = StyleSheet.create({
         paddingLeft:7,
         flexDirection:"row", 
         justifyContent:'space-between', 
-        width:'100%',
+        width:'70%',
         shadowColor:'back',
         backgroundColor:'white',
         borderRadius: 30,

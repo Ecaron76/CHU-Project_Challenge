@@ -1,4 +1,4 @@
-import {View, Button, Text, Image, StyleSheet, Pressable, Dimensions, TouchableOpacity} from 'react-native';
+import {View, Button, Text, Image, StyleSheet, Pressable, Dimensions, TouchableOpacity, ScrollView} from 'react-native';
 import Chart from '../shared/Chart';
 import { useState, useEffect } from 'react';
 import { StepsService } from '../../services/StepsService/StepsService.js';
@@ -69,23 +69,55 @@ export default function AccountPage() {
     }, [selectedOption, arrayOfStepsDatas]);
 
     return (
-        <View>
-        {isLoading ? 
-        (
-            <Loader></Loader>
-        )
-        : 
-        (
-            <View style={{ width: '100%', height:'100%', alignItems: 'center',backgroundColor: 'white', paddingTop:10}}>
+        // <ScrollView style={{backgroundColor:'red', flex:1 }} >
+        // {isLoading ? 
+        // (
+        //     <Loader></Loader>
+        // )
+        // : 
+        // (
+            <ScrollView style={{flex:1, padding:10,}} contentContainerStyle={{alignItems:'center'}}>
                 <View style={stylesAccount.avatar}>
                     <Image
                         source={require('../../../assets/images/home/chat.png')}
                         style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems:'flex-end', position:'absolute' }}
                     />
                 </View>
-                <View style={{width:'70%', alignItems:'center' }}>
+                
+
+                <View style={{width:'100%', alignItems:'center' }}>
                     <Text style={{fontSize: 45, fontWeight:'bold'}}>{stepsValue} </Text>
                     <Text>{displayText}</Text>
+                </View>
+
+                <View style={stylesAccount.badgeContainer}>
+                        <Image
+                            source={require('../../../assets/images/badges/badge-turtle.png')}
+                            style={{height: '98%', width:'15.5%', resizeMode:'contain'}}
+                        />
+                        <Image
+                            source={require('../../../assets/images/badges/badge-rabbit.png')}
+                            style={{ height: '98%', width:'15.5%', resizeMode:'contain'}}
+                        />
+                        <Image
+                            source={require('../../../assets/images/badges/badge-leopard.png')}
+                            style={{height: '98%', width:'15.5%', resizeMode:'contain'}}
+                        />
+                        <Image
+                            source={require('../../../assets/images/badges/badge-rocket.png')}
+                            style={{height: '98%', width:'15.5%', resizeMode:'contain'}}
+                        />
+                        <Image
+                            source={require('../../../assets/images/badges/badge-leopard.png')}
+                            style={{height: '98%', width:'15.5%', resizeMode:'contain', opacity:0.3}}
+                        />
+                        <Image
+                            source={require('../../../assets/images/badges/badge-rocket.png')}
+                            style={{height: '98%',width:'15.5%', resizeMode:'contain', opacity:0.3 }}
+                        />
+                </View>
+
+                <View style={{width:'100%', alignItems:'center', justifyContent:'center', marginTop:20, marginBottom:20 }}>
                     <View style={stylesAccount.testa}>
                         <TouchableOpacity
                             style={[
@@ -127,44 +159,16 @@ export default function AccountPage() {
                             </Text>
                         </TouchableOpacity>
                     </View>
-                </View>
-                
-                
-        
-                <View style={{ width: '85%', height:'30%', alignSelf: 'center', }}>
-                    {arrayOfStepsDatas.length > 0 ? <Chart delay={selectedOption} stepsData={arrayOfStepsDatas} /> : null}
-                </View>
-                <View style={{width:'90%', borderRadius:10, marginTop:30}}>
-                    <View style={stylesAccount.badgeContainer}>
-                        <Image
-                            source={require('../../../assets/images/badges/badge-turtle.png')}
-                            style={{height: '98%', width:'15.5%', resizeMode:'contain'}}
-                        />
-                        <Image
-                            source={require('../../../assets/images/badges/badge-rabbit.png')}
-                            style={{ height: '98%', width:'15.5%', resizeMode:'contain'}}
-                        />
-                        <Image
-                            source={require('../../../assets/images/badges/badge-leopard.png')}
-                            style={{height: '98%', width:'15.5%', resizeMode:'contain'}}
-                        />
-                        <Image
-                            source={require('../../../assets/images/badges/badge-rocket.png')}
-                            style={{height: '98%', width:'15.5%', resizeMode:'contain'}}
-                        />
-                        <Image
-                            source={require('../../../assets/images/badges/badge-leopard.png')}
-                            style={{height: '98%', width:'15.5%', resizeMode:'contain', opacity:0.3}}
-                        />
-                        <Image
-                            source={require('../../../assets/images/badges/badge-rocket.png')}
-                            style={{height: '98%',width:'15.5%', resizeMode:'contain', opacity:0.3 }}
-                        />
+                    <View style={{width:'100%'}}>
+                    { arrayOfStepsDatas.length > 0 ? <Chart delay={selectedOption} stepsData={arrayOfStepsDatas} /> : null}
                     </View>
                 </View>
-            </View>
-        )}
-        </View>
+            </ScrollView>
+
+            
+        /* )}
+            
+        </ScrollView> */
     );
 }
 
@@ -172,8 +176,8 @@ const stylesAccount = StyleSheet.create({
     avatar:{
         backgroundColor:'white', 
         borderRadius:200,
-        width:'60%', 
-        height:'32%', 
+        width:'70%', 
+        height:250, 
         shadowColor: "black",
         shadowOffset: {
             width: 0,
@@ -184,13 +188,13 @@ const stylesAccount = StyleSheet.create({
         elevation: 10,
     },
     testa:{
-        marginTop:10,
+        
         marginBottom:13,
         paddingRight:10,
         paddingLeft:7,
         flexDirection:"row", 
         justifyContent:'space-between', 
-        width:'100%',
+        width:'70%',
         shadowColor:'back',
         backgroundColor:'white',
         borderRadius: 30,
