@@ -127,7 +127,7 @@ export default function AccountPage() {
 
                     <View style={stylesAccount.avatar}>
                         <Image
-                            source={require('../../../assets/images/home/chat.png')}
+                            source={selectedAvatar || defaultAvatarPath}
                             style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems:'flex-end', position:'absolute' }}
                         />
                     </View>
