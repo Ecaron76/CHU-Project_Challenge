@@ -3,27 +3,32 @@ import { View, Modal, StyleSheet, Text, TouchableOpacity, Image, ImageBackground
 
 const Badge = ({ isVisible, onClose, badgeTitle, stepAchieve }) => {
     const [badgeUrl, setBadgeUrl] = useState("")
-    const success= true
+  const [success, setSuccess] = useState("")
     useEffect(() => {
         switch (badgeTitle) {
           case "Tortue":
             setBadgeUrl(require('../../../../assets/images/badges/badge-turtle.png'));
+            setSuccess(true);
             break;
           
           case "Lièvre":
             setBadgeUrl(require('../../../../assets/images/badges/badge-rabbit.png'));
+            setSuccess(false);
             break;
           
           case "Léopard":
             setBadgeUrl(require('../../../../assets/images/badges/badge-leopard.png'));
+            setSuccess(false);
             break;
           
           case "Fusée":
             setBadgeUrl(require('../../../../assets/images/badges/badge-rocket.png'));
+            setSuccess(false);
             break;
         
           default:
             setBadgeUrl(require('../../../../assets/images/badges/badge-rocket.png'));
+            setSuccess(false);
 
             break;
         }
@@ -59,7 +64,7 @@ const Badge = ({ isVisible, onClose, badgeTitle, stepAchieve }) => {
             (
                 <View style={{display:'flex',flexDirection:'column', alignItems:'center', width:'100%', height:'35%', gap:10}}>
                     <Text style={{fontWeight:700, fontSize:25}}> Badge "{badgeTitle}" </Text>
-                    <Text style={{fontStyle:'italic', fontSize:16, textAlign:'center'}}>Vous avez réaliser un total de {stepAchieve} pas.</Text>
+                    <Text style={{fontStyle:'italic', fontSize:16, textAlign:'center'}}>Vous avez réalisé un total de {stepAchieve} pas.</Text>
                     <Text style={{fontWeight:700, fontSize:20, color:'#00B4EC'}}>Félicitations !</Text>
                 </View> 
             ) 
@@ -68,7 +73,7 @@ const Badge = ({ isVisible, onClose, badgeTitle, stepAchieve }) => {
                 <View style={{display:'flex',flexDirection:'column', alignItems:'center', width:'100%', height:'35%', gap:10}}>
                     <Text style={{fontWeight:700, fontSize:25}}> Badge "{badgeTitle}" </Text>
                     <Text style={{fontStyle:'italic', fontSize:16, textAlign:'center'}}>Vous devez réaliser un total de {stepAchieve} pas pour obtenir ce badge.</Text>
-                    <Text style={{fontWeight:700, fontSize:20, color:'#00B4EC', textAlign:'center'}}>Ils vous restes encore {stepAchieve} à faire.</Text>
+                    {/*<Text style={{fontWeight:700, fontSize:20, color:'#00B4EC', textAlign:'center'}}>Il vous reste encore {stepAchieve} à faire.</Text>*/}
                 </View>
             )
           }

@@ -143,19 +143,19 @@ export default function AccountPage() {
                         <TouchableOpacity style={{height: '98%', width:'25%'}} onPress={() => openBadge("rabbit")}>
                             <Image
                                 source={require('../../../assets/images/badges/badge-rabbit.png')}
-                                style={{ height: '98%', width:'100%', resizeMode:'contain'}}
+                                style={{ height: '98%', width:'100%', resizeMode:'contain', opacity: 0.2}}
                             />
                         </TouchableOpacity>
                         <TouchableOpacity style={{height: '98%', width:'25%'}} onPress={() => openBadge("leopard")}>
                             <Image
                                 source={require('../../../assets/images/badges/badge-leopard.png')}
-                                style={{height: '98%', width:'100%', resizeMode:'contain'}}
+                                style={{height: '98%', width:'100%', resizeMode:'contain', opacity: 0.2}}
                             />
                         </TouchableOpacity>
                         <TouchableOpacity style={{height: '98%', width:'25%'}} onPress={() => openBadge("rocket")}>
                             <Image
                                 source={require('../../../assets/images/badges/badge-rocket.png')}
-                                style={{height: '98%', width:'100%', resizeMode:'contain'}}
+                                style={{height: '98%', width:'100%', resizeMode:'contain', opacity: 0.2}}
                             />
                         </TouchableOpacity>
                         <Badge isVisible={isBadgeVisible} onClose={closeBage} badgeTitle={badgeTitle} stepAchieve={stepAchieve
