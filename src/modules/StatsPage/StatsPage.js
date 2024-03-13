@@ -6,6 +6,8 @@ import Indicator from '../shared/Indicator';
 import Chart from '../shared/Chart';
 import { loginStore } from "../../store/loginStore";
 import Loader from '../Loader/Loader';
+import { LoginService } from '../../services/LoginService/LoginService';
+
 
 
 export default function StatsPage() {
@@ -16,6 +18,8 @@ export default function StatsPage() {
     const [stepsData, setStepsData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const isFocused = useIsFocused();
+    const {pkId} = loginStore();
+
 
     useEffect(() => {
 
@@ -25,13 +29,14 @@ export default function StatsPage() {
             setIsLoading(false);
           } 
       
-          if(isFocused){ 
+          if(isFocused){
+
+            // Méthode qui met à jour le flag indiquant que le user s'est connecté pour la première fois.
+            LoginService.updateUserAlreadyLoggedOnce(pkId);
 
             setIsLoading(true);      
             getStepsFunction();
       
-
-            
           }
 
     }, [isFocused]);
