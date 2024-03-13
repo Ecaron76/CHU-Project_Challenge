@@ -7,6 +7,7 @@ import Indicator from '../shared/Indicator'
 import RingProgress from './components/RingProgresss'
 // import useHealthData from '../../hooks/useHealthData';
 import { useIsFocused } from '@react-navigation/native';
+import OnBoarding from './components/OnBoarding';
 
 
 /**
@@ -25,7 +26,7 @@ const ActivityPage = () => {
   const getStepsTimerValue = 1000; // en ms
   const saveStepsTimerValue = 60000; // en ms  
   const {chuId, password, isLogged, setChuId, setPassword, setIsLogged, pkId, setPkId, challengeId, setChallengeId} = loginStore();
-  
+  const [onBoardingVisible, setOnBoardingVisible] = useState(true)
   const isFocused = useIsFocused();
 
   useEffect(() => {
@@ -116,9 +117,19 @@ const ActivityPage = () => {
   const saveSteps = async (dailySteps) => {
     await PedometerService.saveSteps(dailySteps, chuId, pkId, challengeId);
   }
+  const openOnBoarding = () => {
+    setOnBoardingVisible(true)
+
+  };
+
+  const closeOnBoarding = () => {
+    setOnBoardingVisible(false);
+  };
 
   return (
     <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
+      <OnBoarding isVisible={onBoardingVisible} onClose={closeOnBoarding}  />
+
       <View style={stylesHome.podometerContainer}>
         <RingProgress progress={dailySteps/10000} />
       </View>
@@ -127,6 +138,7 @@ const ActivityPage = () => {
         valueIndicator={dailySteps} haveIcon={true} />
         <Indicator iconIndicator={require('../../../assets/images/home/path-road_black.png')} textIndicator='Km parcourus' valueIndicator={(((dailySteps/100)*64)/1000).toFixed(2)} />
       </View>
+      
     </View>
   );
 };
