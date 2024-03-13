@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Modal, Image, FlatList, Alert } from 'rea
 import useAvatarStore from './../../../store/avatarStore';
 import SettingsStyles from '../Settings.styles';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const avatars = [
     { id: 1, path: require('../../../../assets/images/userIcons/chat.png') },

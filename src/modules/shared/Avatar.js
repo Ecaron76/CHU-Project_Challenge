@@ -1,20 +1,23 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { View, Image, StyleSheet, Text } from 'react-native';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import useAvatarStore from "../../store/avatarStore";
 
 
 const Avatar = () => {
-    const { selectedAvatar } = useAvatarStore();
+    const { selectedAvatar, loadSelectedAvatar } = useAvatarStore();
     const defaultAvatarPath = require('../../../assets/images/userIcons/chat.png');
 
+    useEffect(() => {
+        loadSelectedAvatar();
+    }, [loadSelectedAvatar]);
+
     return (
-      <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center' }}>
-        <View style={stylesAvatar.test}>
+      <View style={stylesAvatar.avatarContainer}>
           <Image
               source={selectedAvatar || defaultAvatarPath}
-            style={{ width: '100%', height: '90%', resizeMode: 'contain', position: 'absolute' }}
+              style={stylesAvatar.avatarIcon}
           />
-        </View>
       </View>
     );
   };
@@ -22,20 +25,18 @@ const Avatar = () => {
 export default Avatar
 
 const stylesAvatar = StyleSheet.create({
-    test:{
-        backgroundColor:'white', 
-        borderRadius:200,width:'40%', 
-        height:'40%', 
-        justifyContent:'flex-end',
-        alignItems:'flex-end',
-        shadowColor: "black",
-      shadowOffset: {
-        width: 0,
-        height: 1,
-      },
-      shadowOpacity:  0.60,
-      shadowRadius: 1.51,
-      elevation: 10
+    avatarContainer: {
+        width: '100%',
+        height: '100%',
+        justifyContent: 'flex-end',
+        alignItems: 'center',
+        position: 'absolute',
+        overflow: 'hidden',
+    },
+    avatarIcon:{
+        width: '90%',
+        height: '90%',
+        resizeMode: 'contain',
     },
     
         

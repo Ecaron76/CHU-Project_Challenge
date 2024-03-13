@@ -6,8 +6,9 @@ import { loginStore } from "../../store/loginStore";
 import { useIsFocused } from '@react-navigation/native';
 import Loader from '../Loader/Loader';
 import Badge from './components/Badge';
-import useAvatarStore from "../../store/avatarStore";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import defaultAvatarPath from "../../../assets/images/userIcons/chat.png";
+import Avatar from "../shared/Avatar";
 
 
 export default function AccountPage() {
@@ -58,9 +59,6 @@ export default function AccountPage() {
   const closeBage = () => {
     setBadgeVisible(false);
   };
-
-    const { selectedAvatar } = useAvatarStore();
-    const defaultAvatarUrl = '../../../assets/images/home/chat.png';
 
     useEffect(() => {
         if(isFocused){ 
@@ -126,9 +124,7 @@ export default function AccountPage() {
                 <ScrollView style={{flex:1, padding:10,}} contentContainerStyle={{alignItems:'center'}}>
 
                     <View style={stylesAccount.avatar}>
-                        <Image
-                            source={selectedAvatar || defaultAvatarPath}
-                            style={{ width: '100%', height: '100%', justifyContent: 'flex-end', alignItems:'flex-end', position:'absolute' }}
+                        <Avatar
                         />
                     </View>
 
@@ -269,7 +265,6 @@ const stylesAccount = StyleSheet.create({
         borderRadius: 15,
 
         textAlign: 'center',
-        borderRadius: 15,
         
       },
       optionText: {

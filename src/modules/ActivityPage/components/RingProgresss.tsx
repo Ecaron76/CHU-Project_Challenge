@@ -126,7 +126,29 @@ const RingProgress = ({radius = 170, strokeWidth = 9, progress = 0.5}: RingProgr
         {linesMain}
         {linesSub}
         {textElements}
-        <Avatar />
+        <View style={{
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}>
+        <View style={{
+          backgroundColor:'white',
+          borderRadius:200,
+          width:'40%',
+          height:'40%',
+          shadowColor: "black",
+          shadowOffset: {
+            width: 0,
+            height: 1,
+          },
+          shadowOpacity:  0.60,
+          shadowRadius: 1.51,
+          elevation: 10,
+         }}>
+          <Avatar />
+        </View>
+        </View>
         {/* Foreground */}
         <AnimatedCircle
           animatedProps={animatedProps}
