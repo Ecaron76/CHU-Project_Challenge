@@ -92,8 +92,6 @@ export default function LoginPage() {
                     initialValues={{ id: "", password: "" }}
                     onSubmit={ async (values) => {
 
-                        console.log(values);
-
                         // Récupère tous les challenges auxquels le user est inscrit.
                         const challengeInfosByUserId = await LoginService.getChallengeDataByUserId(values.id, values.password);
 
@@ -127,10 +125,9 @@ export default function LoginPage() {
                                 setTriedToLogOnce(true); // indique que le user a essayé de se connecter mais avec les mauvais identifiants.
                                 setEnteredFalsePassword(true); // indique que le user a entré un mauvais MDP.
                             }
-                            else {
-                                setEnteredFalsePassword(false); 
-                                console.log("test");
-
+                            else { // Si tout est bon
+                                setEnteredFalsePassword(false);
+                                
                                 //vérifie si les dates du challenge sont ouvertes pour la connexion.
                                 setisChallengeOpen(checkIfChallengeOpen(activeChallengeInfos));
                                 

@@ -7,6 +7,8 @@ import Indicator from '../shared/Indicator'
 import RingProgress from './components/RingProgresss'
 // import useHealthData from '../../hooks/useHealthData';
 import { useIsFocused } from '@react-navigation/native';
+import OnBoarding from './components/OnBoarding';
+import { LoginService } from '../../services/LoginService/LoginService';
 
 
 /**
@@ -24,13 +26,16 @@ const ActivityPage = () => {
   const launchedTimerForSaving = useRef();
   const getStepsTimerValue = 1000; // en ms
   const saveStepsTimerValue = 60000; // en ms  
-  const {chuId, password, isLogged, setChuId, setPassword, setIsLogged, pkId, setPkId, challengeId, setChallengeId} = loginStore();
-  
+  const {chuId, password, isLogged, setChuId, setPassword, setIsLogged, pkId, setPkId, challengeId, setChallengeId, alreadyLoggedOnce, setAlreadyLoggedOnce} = loginStore();
+  const [onBoardingVisible, setOnBoardingVisible] = useState(true)
   const isFocused = useIsFocused();
 
   useEffect(() => {
     
     const getSteps = async () => {
+
+      await setIfUserAlreadyLoggedOnce();
+      
       // Si premier chargement de la page
       if (!isFirstLoadingRef.current) {
         await saveData();
@@ -46,6 +51,13 @@ const ActivityPage = () => {
     }
   }, [isFocused, dailySteps]);
   
+  // Méthode qui cherche si l'utilisateur s'est déja connecté.
+  const setIfUserAlreadyLoggedOnce = async () => {
+    // On regarde si le user s'est déja connecté pour afficher ou non le onboarding.
+    const hasAlreadyLoggedOnce = await LoginService.getIfUserAlreadyLoggedOnce(pkId);
+
+    setAlreadyLoggedOnce(hasAlreadyLoggedOnce);
+  };
 
   // Méthode qui appelle getPedometerData toutes les 10 secondes et vérifie si les nombres de pas à évolué. 
   const loadData = async () => {
@@ -116,9 +128,19 @@ const ActivityPage = () => {
   const saveSteps = async (dailySteps) => {
     await PedometerService.saveSteps(dailySteps, chuId, pkId, challengeId);
   }
+  const openOnBoarding = () => {
+    setOnBoardingVisible(true)
+
+  };
+
+  const closeOnBoarding = () => {
+    setAlreadyLoggedOnce(true);
+  };
 
   return (
     <View style={{ width: '100%', height: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white' }}>
+      <OnBoarding isVisible={!alreadyLoggedOnce} onClose={closeOnBoarding}  />
+
       <View style={stylesHome.podometerContainer}>
         <RingProgress progress={dailySteps/10000} />
       </View>
@@ -127,6 +149,7 @@ const ActivityPage = () => {
         valueIndicator={dailySteps} haveIcon={true} />
         <Indicator iconIndicator={require('../../../assets/images/home/path-road_black.png')} textIndicator='Km parcourus' valueIndicator={(((dailySteps/100)*64)/1000).toFixed(2)} />
       </View>
+      
     </View>
   );
 };

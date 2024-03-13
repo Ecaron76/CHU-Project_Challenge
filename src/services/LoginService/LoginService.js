@@ -42,6 +42,20 @@ export const LoginService = {
             console.log("An error occured " + userError);
         }
     },
+    getUserIdByPk: async function (pkId) {
+        try  {
+
+            let { data: userInfos, userError } = await supabase
+            .from('user')
+            .select('*')
+            .eq('id', pkId);
+
+            return userInfos;
+        }
+        catch (userError ){
+            console.log("An error occured " + userError);
+        }
+    },
     // méthode qui récupère l'unique Challenge Actif.
     getActiveChallenge: async function () {
         try  {
@@ -57,4 +71,28 @@ export const LoginService = {
             console.log("An error occured " + error);
         }
     },
-  } 
+    getIfUserAlreadyLoggedOnce: async function (pkId) {
+        try  {
+
+            const userInfos = await this.getUserIdByPk(pkId);
+
+            return userInfos[0].already_logged_once;
+        }
+        catch (challengeError ){
+            console.log("An error occured");
+        }
+    },
+    updateUserAlreadyLoggedOnce: async function (pkId) {
+        try  {
+
+            const { error } = await supabase
+                .from('user')
+                .update({ already_logged_once: true })
+                .eq('id', pkId);
+
+        }
+        catch (error ){
+            console.log("An error occured" + error);
+        }
+    },
+} 
