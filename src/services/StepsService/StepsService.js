@@ -1,6 +1,7 @@
 import { Pedometer } from 'expo-sensors';
 import 'react-native-url-polyfill/auto'
 import { supabase } from "../supabase/supabase";
+import { PedometerService } from '../PedometerService/PedometerService';
 
 export const StepsService = {
     // méthode qui récupère les pas de l'utilisateur pour les 5 derniers mois et créer un tableau qui contient les pas des derniers mois semaines et jours.
@@ -46,6 +47,11 @@ export const StepsService = {
         const arrayOfWeeks = await this.createArrayForWeeksData(fiveMonthStepsData, mondayFiveWeeksBefore, todayDate);
 
         const arrayOfDays = await this.createArrayForDaysData(fiveMonthStepsData, fiveDaysAgo, todayDate);
+
+        const stepsForToday = await PedometerService.getDailySteps();
+        
+        // On remplace la valeur de pas par la valeur de pas en temps réel du podomètre.
+        arrayOfDays[4] = {count: stepsForToday, date: todayDate};
 
         arrayOfData.push(arrayOfMonth, arrayOfWeeks, arrayOfDays);
 
