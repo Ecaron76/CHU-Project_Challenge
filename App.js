@@ -12,7 +12,6 @@ import PrivacyPage from "./src/modules/SettingsPage/components/PrivacyPage";
 export default function App() {
 
 const isLogged = loginStore((state) => state.isLogged);
-console.log("isLogged = " + isLogged);
 
 const Stack = createStackNavigator();
     return (

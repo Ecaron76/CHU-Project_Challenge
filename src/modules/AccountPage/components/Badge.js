@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Modal, StyleSheet, Text, TouchableOpacity, Image, ImageBackground } from 'react-native';
 
 const Badge = ({ isVisible, onClose, badgeTitle, stepAchieve }) => {
-    const [badgeUrl, setBadgeUrl] = useState("")
+  const [badgeUrl, setBadgeUrl] = useState("")
   const [success, setSuccess] = useState("")
     useEffect(() => {
         switch (badgeTitle) {
@@ -44,10 +44,8 @@ const Badge = ({ isVisible, onClose, badgeTitle, stepAchieve }) => {
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
         <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-            {/* Ajoutez ici votre icône de croix ou tout autre élément que vous souhaitez utiliser */}
             <Text style={{color:'white', fontSize:15, fontWeight:'bold'}}>X</Text>
           </TouchableOpacity>
-          {/* Contenu de votre modal */}
           <View style={{backgroundColor:'white', height:'50%', width:'65%', borderRadius:10, justifyContent:'center', shadowOffset: {
         width: 0,
         height: 1,

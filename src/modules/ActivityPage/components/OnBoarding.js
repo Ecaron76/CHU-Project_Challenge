@@ -14,10 +14,8 @@ export default function OnBoarding({isVisible,onClose}) {
         
         <View style={styles.modalContent}>
         <TouchableOpacity onPress={onClose} style={styles.closeButton}>
-            {/* Ajoutez ici votre icône de croix ou tout autre élément que vous souhaitez utiliser */}
             <Text style={{color:'white', fontSize:15, fontWeight:'bold'}}>X</Text>
           </TouchableOpacity>
-          {/* Contenu de votre modal */}
           <View style={{backgroundColor:'white', height:'30%', width:'55%', borderRadius:10, justifyContent:'center', shadowOffset: {
         width: 0,
         height: 1,
@@ -52,7 +50,7 @@ const styles = StyleSheet.create({
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Fond semi-transparent pour l'arrière-plan
+      backgroundColor: 'rgba(0, 0, 0, 0.5)', 
       
     },
     closeButton: {

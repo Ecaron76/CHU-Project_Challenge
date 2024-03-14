@@ -13,9 +13,9 @@ import {
     backgroundGradientTo: "#0000",
     backgroundGradientToOpacity: 0,
     color: (opacity = 1) => `rgba(0, 180, 250, ${opacity})`,
-    strokeWidth: 2, // optional, default 3
+    strokeWidth: 2, 
     barPercentage: 0.5,
-    useShadowColorFromDataset: false ,// optional
+    useShadowColorFromDataset: false ,
     
     
   };
@@ -61,8 +61,8 @@ export default function Chart({delay, stepsData}) {
     datasets: [
       {
         data: stepsCount,
-        color: (opacity = 1) => `rgba(0, 180, 236, ${opacity})`, // optional
-        strokeWidth: 2 // optional
+        color: (opacity = 1) => `rgba(0, 180, 236, ${opacity})`, 
+        strokeWidth: 2 
       }
     ],
     
