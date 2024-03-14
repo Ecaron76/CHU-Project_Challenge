@@ -11,7 +11,7 @@ export default function NotificationsButton() {
         <View>
              <Pressable onPress={() => navigation.navigate('Notifications')}>
               <View style={{ marginRight: 15 }}>
-                <MaterialCommunityIcons name="bell" size={30} color="black" />
+                <MaterialCommunityIcons name="bell" size={30} color="black" style={{ margin: 8 }}/>
               </View>
             </Pressable>
         </View>

@@ -95,13 +95,17 @@ export default function LoginPage() {
                         // Récupère tous les challenges auxquels le user est inscrit.
                         const challengeInfosByUserId = await LoginService.getChallengeDataByUserId(values.id, values.password);
 
-                        // Si pas de challenge pour le user 
-                        if(challengeInfosByUserId.length == 0) {
+                        // Si le user n'existe pas.
+                        if(challengeInfosByUserId === false) {
+                            setTriedToLogOnce(true);
+                            setEnteredFalsePassword(true);
+                        }
+                        // Si le user existe mais n'a pas de challenge à son nom.
+                        else if(challengeInfosByUserId.length === 0) {
                             setNoChallengeForUser(true);
                         }
                         // Si un ou plusieurs challenges pour le user
                         else {
-
                             // On enregistre les identifiant du User dans le store.
                             setPkId(challengeInfosByUserId[0].user.id)
                             setChuId(values.id);
@@ -121,13 +125,12 @@ export default function LoginPage() {
                                 setTriedToLogOnce(true); // indique que le user a essayé de se connecter mais avec les mauvais identifiants.
                                 setEnteredFalsePassword(true); // indique que le user a entré un mauvais MDP.
                             }
-                            else {
-                                setEnteredFalsePassword(false); 
-
+                            else { // Si tout est bon
+                                setEnteredFalsePassword(false);
+                                
                                 //vérifie si les dates du challenge sont ouvertes pour la connexion.
                                 setisChallengeOpen(checkIfChallengeOpen(activeChallengeInfos));
                                 
-                                // TODO Gérer enrolment date
                             }
                         }
                     }}

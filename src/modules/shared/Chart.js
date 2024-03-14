@@ -13,16 +13,20 @@ import {
     backgroundGradientTo: "#0000",
     backgroundGradientToOpacity: 0,
     color: (opacity = 1) => `rgba(0, 180, 250, ${opacity})`,
-    strokeWidth: 2, // optional, default 3
+    strokeWidth: 2, 
     barPercentage: 0.5,
-    useShadowColorFromDataset: false ,// optional
+    useShadowColorFromDataset: false ,
     
     
   };
-
+  const formatValue = (value) => {
+    if (value >= 1000) {
+      return `${Math.round(value / 1000)}K`;
+    }
+    return value.toString();
+  };
   
 export default function Chart({delay, stepsData}) {
-  console.log(stepsData)
   const currentDate = new Date();
   const allDays = [];
   switch (delay) {
@@ -33,12 +37,15 @@ export default function Chart({delay, stepsData}) {
         allDays.push(formattedDay);
       }
       labelsDelay = allDays
+      stepsCount = stepsData[2]?.map(item => item.count)
       break
     case 'semaines':
       const currentWeekNumber = getISOWeek(currentDate);
       const last5Weeks = Array.from({ length: 5 }, (_, i) => currentWeekNumber - i);
       const weekLabels = last5Weeks.map(weekNumber => `Sem ${weekNumber}`);
       labelsDelay = weekLabels.reverse();
+      stepsCount= stepsData[1]?.map(item => item.count)
+
       break;
     case 'mois':
       const allMonths = ["Janv.", "Févr.", "Mars", "Avri.", "Mai", "Juin", "Juil.", "Août", "Sept.", "Octo.", "Nove.", "Déce."];
@@ -54,8 +61,8 @@ export default function Chart({delay, stepsData}) {
     datasets: [
       {
         data: stepsCount,
-        color: (opacity = 1) => `rgba(0, 180, 236, ${opacity})`, // optional
-        strokeWidth: 2 // optional
+        color: (opacity = 1) => `rgba(0, 180, 236, ${opacity})`, 
+        strokeWidth: 2 
       }
     ],
     
@@ -69,6 +76,7 @@ export default function Chart({delay, stepsData}) {
         withDots= {false}
         chartConfig={chartConfig}
         bezier
+        formatYLabel={formatValue}
         style={{
           borderRadius: 16,
         }}

@@ -14,4 +14,6 @@ export const loginStore = create((set) => ({
     setPassword: (enteredPassword) => set((state) => ({ password: enteredPassword })),
     challengeId:"",
     setChallengeId: (id) => set((state) => ({ challengeId: id })),
+    alreadyLoggedOnce:true,
+    setAlreadyLoggedOnce: (firstLogging) => set((state) => ({ alreadyLoggedOnce: firstLogging })),
   }))
