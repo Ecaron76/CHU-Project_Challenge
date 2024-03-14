@@ -2,24 +2,56 @@ import { Pedometer } from 'expo-sensors';
 import 'react-native-url-polyfill/auto'
 import { supabase } from "../supabase/supabase";
 import { loginStore } from "../../store/loginStore";
-
+import {
+    initialize,
+    requestPermission,
+    readRecords,
+  } from 'react-native-health-connect';
+  
 
 export const PedometerService = {
     // méthode qui récupère les pas de l'utilisateur via expoPedometer entre 0h0m0s et 23h59m59s du jour.
     getDailySteps: async function() {
-
         const isAvailable = await Pedometer.isAvailableAsync();
 
-        const startOfDay = new Date();
-        startOfDay.setUTCHours(0,0,0,0);
-
-        var endOfDay = new Date();
-        endOfDay.setUTCHours(23,59,59,0);
-
-        let pastStepCountResult = await Pedometer.getStepCountAsync(startOfDay, endOfDay);
+        let startOfDay = new Date();
+        startOfDay.setUTCHours(0, 0, 0, 0);
+    
+        let endOfDay = new Date();
+        endOfDay.setUTCHours(23, 59, 59, 0);
+    
+        // Si Android
+        if (Platform.OS === 'android') {
+    
+          // initialize the client
+          const isInitialized = await initialize();
+    
+          // request permissions
+          const grantedPermissions = await requestPermission([
+            { accessType: 'read', recordType: 'Steps' },
+          ]);
+    
+          const result = await readRecords('Steps', {
+            timeRangeFilter: {
+              operator: 'between',
+              startTime: startOfDay.toISOString(),
+              endTime: endOfDay.toISOString(),
+            },
+          });
+    
+          return result.length === 0 ? 0 : result.reduce((acc, objet) => acc + objet.count, 0);
+          
+        } else { // Si IOS
+    
+          let pastStepCountResult = await Pedometer.getStepCountAsync(
+            startOfDay,
+            endOfDay
+          );
+      
+          return pastStepCountResult.steps;
+        }
         
-        return pastStepCountResult.steps;
-        
+
     },
     // méthode qui enregistre les pas en base de données.
     saveSteps: async function(stepsCount, chuId, pkId, challengeId ) {
